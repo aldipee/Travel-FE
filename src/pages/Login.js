@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import * as API from '../utils/data'
+
 import Style from 'styled-components'
 import { Container, Col, Form, FormGroup as FrmGroup, Label, Input, Button } from 'reactstrap'
 
@@ -30,6 +32,32 @@ align-items: center;
 `
 
 export default class Login extends Component {
+  state = {
+    username: '',
+    password: ''
+  }
+
+  formSubmit = async e => {
+    e.preventDefault()
+    const res = await API.authLogin(this.state.username, this.state.password)
+    if ((res && res.data && res.data.role === 2) || res.data.role === 1) {
+      this.props.history.push('/')
+    } else {
+      alert('Wrong password')
+    }
+    console.log(res && res.data.role)
+  }
+  inputHandler = e => {
+    this.setState({
+      username: e.currentTarget.value
+    })
+  }
+  passwordHandler = e => {
+    this.setState({
+      password: e.currentTarget.value
+    })
+  }
+
   render() {
     return (
       <div>
@@ -43,18 +71,22 @@ export default class Login extends Component {
                     <Label for="exampleEmail" className="label-form-display">
                       Username
                     </Label>
-                    <Input />
+                    <Input value={this.state.username} onChange={e => this.inputHandler(e)} />
                     {/* <FormFeedback valid>Sweet! that name is available</FormFeedback> */}
                   </FormGroup>
                   <FormGroup className="px-3 mt-3">
                     <Label for="examplePassword" className="label-form-display">
                       Password
                     </Label>
-                    <Input />
+                    <Input
+                      type="password"
+                      value={this.state.password}
+                      onChange={e => this.passwordHandler(e)}
+                    />
                     {/* <FormFeedback>Oh noes! that name is already taken</FormFeedback> */}
                   </FormGroup>
                   <FormGroup className="px-3 mt-4 mb-5">
-                    <Button className="px-4 py-2" color="primary">
+                    <Button onClick={e => this.formSubmit(e)} className="px-4 py-2" color="primary">
                       Sign In
                     </Button>
 
