@@ -21,7 +21,7 @@ const MenuItem = [
   {
     icon: mdiFileChartOutline,
     text: 'Dashboard',
-    path: '/dashboard'
+    path: '/'
   },
   {
     icon: mdiAccountGroupOutline,

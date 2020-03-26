@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import * as API from '../utils/data'
+// import * as API from '../utils/data'
 
 import Style from 'styled-components'
 import { Container, Col, Form, FormGroup as FrmGroup, Label, Input, Button } from 'reactstrap'
+import { AuthContext } from '../context/Auth'
 
 const LoginPage = Style('body')`
 background-color : #efefee;
@@ -32,20 +33,22 @@ align-items: center;
 `
 
 export default class Login extends Component {
+  static contextType = AuthContext
   state = {
     username: '',
     password: ''
   }
+  componentDidMount() {
+    if (this.context.isLogin) {
+      this.props.history.push('/')
+    }
+  }
 
   formSubmit = async e => {
     e.preventDefault()
-    const res = await API.authLogin(this.state.username, this.state.password)
-    if ((res && res.data && res.data.role === 2) || res.data.role === 1) {
-      this.props.history.push('/')
-    } else {
-      alert('Wrong password')
-    }
-    console.log(res && res.data.role)
+    const { AuthLogin } = this.context
+    const res = await AuthLogin(this.state.username, this.state.password)
+    res ? this.props.history.push('/') : alert('wrong')
   }
   inputHandler = e => {
     this.setState({
