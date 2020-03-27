@@ -8,6 +8,7 @@ import AgentsPage from './pages/admin/Agents'
 import RoutesPage from './pages/admin/Routes'
 import EditRoutes from './pages/admin/EditRoute'
 import SchedulesPage from './pages/admin/Schedules'
+import BusSchedulesPage from './pages/admin/Buses'
 
 //Auth Provider
 import AuthProvider from '../src/context/Auth'
@@ -24,6 +25,7 @@ const App = () => {
             <PrivateRoute component={Dashboard} path="/" exact />
             <PrivateRoute component={AgentsPage} path="/agents" exact />
             <PrivateRoute component={RoutesPage} path="/routes" exact />
+            <PrivateRoute component={BusSchedulesPage} path="/buses" exact />
             <PrivateRoute component={SchedulesPage} path="/schedules" exact />
             <PrivateRoute component={EditRoutes} path="/routes/edit/:id" exact />
             <Route exact path="/auth/login" render={props => <Login {...props} />} />
