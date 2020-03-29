@@ -22,6 +22,7 @@ import SchedulesProvider from '../src/context/SchedulesContext'
 import AgentProvider from '../src/context/AgentContext'
 import BusProvider from '../src/context/BusContext'
 import ReservationsProvider from '../src/context/ReservationsContext'
+import UsersProvider from '../src/context/UsersContext'
 
 const App = () => {
   return (
@@ -31,22 +32,64 @@ const App = () => {
           <AgentProvider>
             <BusProvider>
               <ReservationsProvider>
-                <Router>
-                  <Switch>
-                    <PrivateRoute component={Dashboard} path="/" exact />
-                    <PrivateRoute component={AgentsPage} path="/agents" exact />
-                    <PrivateRoute component={ProfilePage} path="/profile" exact />
-                    <PrivateRoute component={ReservationsPage} path="/reservations" exact />
-                    <PrivateRoute component={ReservationsDetails} path="/reservations/details/:id" exact />
-                    <PrivateRoute component={RoutesPage} path="/routes" exact />
-                    <PrivateRoute component={UsersPage} path="/users" exact />
-                    <PrivateRoute component={UserDetails} path="/users/profile/:id" exact />
-                    <PrivateRoute component={BusSchedulesPage} path="/buses" exact />
-                    <PrivateRoute component={SchedulesPage} path="/schedules" exact />
-                    <PrivateRoute component={EditRoutes} path="/routes/edit/:id" exact />
-                    <Route exact path="/auth/login" render={props => <Login {...props} />} />
-                  </Switch>
-                </Router>
+                <UsersProvider>
+                  <Router>
+                    <Switch>
+                      <PrivateRoute component={Dashboard} path="/" exact />
+                      <PrivateRoute
+                        component={AgentsPage}
+                        path="/agents"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={ProfilePage}
+                        path="/profile"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={ReservationsPage}
+                        path="/reservations"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={ReservationsDetails}
+                        path="/reservations/details/:id"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={RoutesPage}
+                        path="/routes"
+                        exact
+                      />
+                      <PrivateRoute component={UsersPage} path="/users" exact />
+                      <PrivateRoute
+                        component={UserDetails}
+                        path="/users/profile/:id"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={BusSchedulesPage}
+                        path="/buses"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={SchedulesPage}
+                        path="/schedules"
+                        exact
+                      />
+                      <PrivateRoute
+                        component={EditRoutes}
+                        path="/routes/edit/:id"
+                        exact
+                      />
+                      <Route
+                        exact
+                        path="/auth/login"
+                        render={props => <Login {...props} />}
+                      />
+                    </Switch>
+                  </Router>
+                </UsersProvider>
               </ReservationsProvider>
             </BusProvider>
           </AgentProvider>

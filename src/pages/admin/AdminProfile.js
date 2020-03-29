@@ -37,9 +37,13 @@ class UserDetails extends Component {
   }
 
   loadData = id => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token_user')}`
     axios
-      .get(config.DATA_URL.concat(`users/profile/${this.props.match.params.id}`))
+      .get(
+        config.DATA_URL.concat(`users/profile/${this.props.match.params.id}`)
+      )
       .then(data => {
         this.setState({
           profileData: data.data.profileData,
@@ -64,7 +68,10 @@ class UserDetails extends Component {
             <Row>
               <Col sm="12" className="mb-2 mt-2">
                 <Card body>
-                  <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                  <CardText>
+                    With supporting text below as a natural lead-in to
+                    additional content.
+                  </CardText>
                 </Card>
               </Col>
               <Col sm="12">
@@ -85,7 +92,9 @@ class UserDetails extends Component {
                           <Row>
                             <Col md="12">
                               <CardBody>
-                                <CardTitle className="text-bold">User ID</CardTitle>
+                                <CardTitle className="text-bold">
+                                  User ID
+                                </CardTitle>
                                 <CardSubtitle>
                                   <Badge color="success">
                                     <h5># {profileData && profileData.id}</h5>
@@ -99,7 +108,9 @@ class UserDetails extends Component {
                                       <Label>Full Name</Label>
                                     </Col>
                                     <Col md="9">
-                                      <span>{profileData && profileData.fullName}</span>
+                                      <span>
+                                        {profileData && profileData.fullName}
+                                      </span>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -107,7 +118,11 @@ class UserDetails extends Component {
                                       <Label>Birth of Date</Label>
                                     </Col>
                                     <Col md="9">
-                                      <span>{profileData && profileData.bod && converDate(profileData.bod)}</span>
+                                      <span>
+                                        {profileData &&
+                                          profileData.bod &&
+                                          converDate(profileData.bod)}
+                                      </span>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -115,7 +130,9 @@ class UserDetails extends Component {
                                       <Label>Gender</Label>
                                     </Col>
                                     <Col md="9">
-                                      <span>{profileData && profileData.gender}</span>
+                                      <span>
+                                        {profileData && profileData.gender}
+                                      </span>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -123,7 +140,9 @@ class UserDetails extends Component {
                                       <Label>Phone Number</Label>
                                     </Col>
                                     <Col md="9">
-                                      <span>{profileData && profileData.phoneNumber}</span>
+                                      <span>
+                                        {profileData && profileData.phoneNumber}
+                                      </span>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -131,7 +150,9 @@ class UserDetails extends Component {
                                       <Label>Full Address</Label>
                                     </Col>
                                     <Col md="9">
-                                      <span>{profileData && profileData.fullAddress}</span>
+                                      <span>
+                                        {profileData && profileData.fullAddress}
+                                      </span>
                                     </Col>
                                   </Row>
                                   <Row>
@@ -140,7 +161,9 @@ class UserDetails extends Component {
                                     </Col>
                                     <Col md="9">
                                       <span>
-                                        {profileData && profileData.balance && convertToRupiah(profileData.balance)}
+                                        {profileData &&
+                                          profileData.balance &&
+                                          convertToRupiah(profileData.balance)}
                                       </span>
                                     </Col>
                                   </Row>
@@ -199,11 +222,27 @@ class UserDetails extends Component {
                                   <td>{index + 1}</td>
                                   <td>{data && data.reservation_id}</td>
                                   <td>{data && data.booked_by_name}</td>
-                                  <td>{data && data.schedule_date && converDate(data.schedule_date)}</td>
+                                  <td>
+                                    {data &&
+                                      data.schedule_date &&
+                                      converDate(data.schedule_date)}
+                                  </td>
                                   <td>{data && data.schedule_time}</td>
-                                  <td>{data && `${data.check_in ? 'Completed' : 'Waiting'}`}</td>
-                                  <td>{data && `${data.origin}-${data.destination}`}</td>
-                                  <td>{data && data.totalPrice && convertToRupiah(data.totalPrice)}</td>
+                                  <td>
+                                    {data &&
+                                      `${
+                                        data.check_in ? 'Completed' : 'Waiting'
+                                      }`}
+                                  </td>
+                                  <td>
+                                    {data &&
+                                      `${data.origin}-${data.destination}`}
+                                  </td>
+                                  <td>
+                                    {data &&
+                                      data.totalPrice &&
+                                      convertToRupiah(data.totalPrice)}
+                                  </td>
                                 </tr>
                               ))}
                           </tbody>

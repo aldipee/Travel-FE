@@ -3,13 +3,22 @@ import React, { useContext, useEffect } from 'react'
 //Context
 import { AgentContext } from '../../context/AgentContext'
 
-import { Container, Col, Row, Card, CardTitle, CardText, Table } from 'reactstrap'
+import {
+  Container,
+  Col,
+  Row,
+  Card,
+  CardTitle,
+  CardText,
+  Table
+} from 'reactstrap'
 import Layout from '../layout/Dashboard.layout'
 
 function Agents() {
   useEffect(() => {
     data.actions.loadData()
   }, [])
+
   const data = useContext(AgentContext)
 
   return (
@@ -19,7 +28,10 @@ function Agents() {
           <Col sm="12" className="mt-3 mb-2">
             <Card body>
               <CardTitle>Special Title Treatment</CardTitle>
-              <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+              <CardText>
+                With supporting text below as a natural lead-in to additional
+                content.
+              </CardText>
             </Card>
           </Col>
           <Col sm="12">

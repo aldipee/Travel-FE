@@ -3,7 +3,19 @@ import formSerizalize from 'form-serialize'
 import axios from 'axios'
 import config from '../../utils/config'
 
-import { Button, Container, Col, Row, Card, CardTitle, FormGroup, Form, Label, Input, CardBody } from 'reactstrap'
+import {
+  Button,
+  Container,
+  Col,
+  Row,
+  Card,
+  CardTitle,
+  FormGroup,
+  Form,
+  Label,
+  Input,
+  CardBody
+} from 'reactstrap'
 
 import { RoutesContext } from '../../context/RouteContext'
 import Layout from '../layout/Dashboard.layout'
@@ -19,7 +31,9 @@ class EditRoutes extends Component {
     distance: 0
   }
   componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token_user')}`
     const { id } = this.props.match.params
     axios.get(config.DATA_URL.concat(`routes/${id}`)).then(datas => {
       const { data } = datas
@@ -36,14 +50,19 @@ class EditRoutes extends Component {
   editData = e => {
     e.preventDefault()
     const data = formSerizalize(e.target, { hash: true })
-    axios.patch(config.DATA_URL.concat(`routes/${this.props.match.params.id}`), data).then(data => {
-      if (data.status === 200) {
-        alert('data update')
-        this.props.history.push('/routes')
-      } else {
-        alert('update failed')
-      }
-    })
+    axios
+      .patch(
+        config.DATA_URL.concat(`routes/${this.props.match.params.id}`),
+        data
+      )
+      .then(data => {
+        if (data.status === 200) {
+          alert('data update')
+          this.props.history.push('/routes')
+        } else {
+          alert('update failed')
+        }
+      })
   }
 
   inputHandler = e => {
@@ -59,10 +78,11 @@ class EditRoutes extends Component {
         <Layout>
           <Container>
             <p>
-              The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
-              larger screens. When toggled using the Button below, the menu will change.
+              The starting state of the menu will appear collapsed on smaller
+              screens, and will appear non-collapsed on larger screens. When
+              toggled using the Button below, the menu will change.
             </p>
-            <Row className='mx-2'>
+            <Row className="mx-2">
               <Card body>
                 <CardTitle>All Routes</CardTitle>
                 <Col sm="12">

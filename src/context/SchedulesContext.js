@@ -4,54 +4,64 @@ import formSerialize from 'form-serialize'
 
 import config from '../utils/config'
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
-
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
+  'token_user'
+)}`
 export const SchedulesContext = React.createContext()
 
 export default class Provider extends React.Component {
   state = {
     data: [],
-    isLoading: false,
-    showModal: false
+    routes: [],
+    dataSchedules: [],
+    isLoading: false
   }
-  loadData = (originCode, destinationCode) => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
+
+  loadRoutes = () => {
     axios
-      .get(config.DATA_URL.concat(`schedules?origin=${originCode}&destination=${destinationCode}`))
+      .get(config.DATA_URL.concat('routes?show=all'))
       .then(data => {
+        let routes = data.data.data.map(dest => ({
+          value: `${dest.origin_code}-${dest.destination_code}`,
+          label: `${dest.origin} (${dest.origin_code}) - ${dest.destination} (${dest.destination_code})`
+        }))
         this.setState({
-          data: data.data.data
+          data: data.data.data,
+          routes
         })
       })
       .catch(err => {
         console.log(err)
       })
   }
-
-  addData = e => {
-    e.preventDefault()
-    const data = formSerialize(e.target, { hash: true })
-    axios.post(config.DATA_URL.concat('schedules'), data).then(data => {
-      if (data.status === 200) {
-        this.setState({
-          showModal: false
-        })
-        this.loadData()
-      } else {
-        alert('Failed to insert data')
-      }
-    })
-  }
-
-  openModal = () => {
-    this.setState({
-      showModal: !this.state.showModal
-    })
+  loadSchedules = query => {
+    axios
+      .get(config.DATA_URL.concat(`schedules${query}`))
+      .then(data => {
+        if (data.status === 200) {
+          this.setState({
+            dataSchedules: data.data.data
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   render() {
     return (
       <SchedulesContext.Provider
-        value={{ ...this.state, loadData: this.loadData, openModal: this.openModal, addData: this.addData }}>
+        value={{
+          data: this.state.data,
+          routes: this.state.routes,
+          dataSchedules: this.state.dataSchedules,
+          isLoading: this.state.isLoading,
+          actions: {
+            loadRoutes: this.loadRoutes,
+            loadSchedules: this.loadSchedules
+          }
+        }}>
         {this.props.children}
       </SchedulesContext.Provider>
     )

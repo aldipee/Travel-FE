@@ -2,7 +2,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import formSerizalize from 'form-serialize'
 
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip, FormGroup, Form, Input } from 'reactstrap'
+import {
+  Button,
+  Container,
+  Col,
+  Row,
+  Card,
+  CardTitle,
+  CardText,
+  Table,
+  UncontrolledTooltip,
+  FormGroup,
+  Form,
+  Input
+} from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
 
@@ -13,17 +26,19 @@ import InsertModal from '../../components/ModalRoutes'
 function Routes(props) {
   const routesData = useContext(RoutesContext)
   const [showModal, setShowModal] = useState(false)
-  useEffect(() => {
-    routesData.loadData()
-  }, [])
   const openModal = () => setShowModal(!showModal)
   const search = e => {
     e.preventDefault()
     const data = formSerizalize(e.target, { hash: true })
-    const query = `?${data.searchValue ? `search[value]=${data.searchValue}&` : ''}limit=${data.limit}`
+    const query = `?${
+      data.searchValue ? `search[value]=${data.searchValue}&` : ''
+    }limit=${data.limit}`
     props.history.push({ search: query })
     routesData.loadData(props.history.location.search)
   }
+  useEffect(() => {
+    routesData.loadData()
+  }, [])
   return (
     <>
       <InsertModal showModal={showModal} openModal={openModal} />
@@ -33,7 +48,10 @@ function Routes(props) {
             <Col sm="6" className="my-3">
               <Card body>
                 <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                <CardText>
+                  With supporting text below as a natural lead-in to additional
+                  content.
+                </CardText>
               </Card>
             </Col>
             <Col sm="12">
@@ -49,7 +67,11 @@ function Routes(props) {
                     <Col sm="12">
                       <Form inline onSubmit={search}>
                         <FormGroup className="mr-4">
-                          <Input type="text" name="searchValue" placeholder="Search by name.." />
+                          <Input
+                            type="text"
+                            name="searchValue"
+                            placeholder="Search by name.."
+                          />
                         </FormGroup>
                         <Col>
                           <FormGroup className="mr-4">
@@ -81,25 +103,44 @@ function Routes(props) {
                     {routesData.data &&
                       routesData.data.map((data, index) => (
                         <tr>
-                          <th scope="row">{routesData.startPageFrom + index}</th>
+                          <th scope="row">
+                            {routesData.startPageFrom + index}
+                          </th>
                           <td>
                             {data && data.origin} ({data && data.origin_code})
                           </td>
                           <td>
-                            {data && data.destination} ({data && data.destination_code})
+                            {data && data.destination} (
+                            {data && data.destination_code})
                           </td>
                           <td> {data && data.distance}</td>
 
                           <td>
-                            <Link to={`${props.match.path}/edit/${data && data.id}`}>
-                              <Icon id="EditData" path={mdiFileEditOutline} size={1} color="#8d9498" />
-                              <UncontrolledTooltip placement="right" target="EditData">
+                            <Link
+                              to={`${props.match.path}/edit/${data &&
+                                data.id}`}>
+                              <Icon
+                                id="EditData"
+                                path={mdiFileEditOutline}
+                                size={1}
+                                color="#8d9498"
+                              />
+                              <UncontrolledTooltip
+                                placement="right"
+                                target="EditData">
                                 Edit Data
                               </UncontrolledTooltip>
                             </Link>
                             <Button close>
-                              <Icon id="DeleteData" path={mdiDeleteOutline} size={1} color="#8d9498" />
-                              <UncontrolledTooltip placement="right" target="DeleteData">
+                              <Icon
+                                id="DeleteData"
+                                path={mdiDeleteOutline}
+                                size={1}
+                                color="#8d9498"
+                              />
+                              <UncontrolledTooltip
+                                placement="right"
+                                target="DeleteData">
                                 Delete Data
                               </UncontrolledTooltip>
                             </Button>
@@ -110,12 +151,18 @@ function Routes(props) {
                 </Table>
                 <Row>
                   <Col md={6} className="text-center">
-                    <Button disabled={routesData.pageInfo.prevLink ? false : true} onClick={routesData.prevData} color="primary">
+                    <Button
+                      disabled={routesData.pageInfo.prevLink ? false : true}
+                      onClick={routesData.prevData}
+                      color="primary">
                       Prev
                     </Button>
                   </Col>
                   <Col md={6} className="text-center">
-                    <Button disabled={routesData.pageInfo.nextLink ? false : true} onClick={routesData.nextData} color="primary">
+                    <Button
+                      disabled={routesData.pageInfo.nextLink ? false : true}
+                      onClick={routesData.nextData}
+                      color="primary">
                       Next
                     </Button>
                   </Col>

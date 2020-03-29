@@ -34,7 +34,9 @@ class ReservationsDetails extends Component {
   }
 
   loadData = id => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token_user')}`
     axios
       .get(config.DATA_URL.concat(`reservations/${this.props.match.params.id}`))
       .then(data => {
@@ -60,14 +62,19 @@ class ReservationsDetails extends Component {
             <Row>
               <Col sm="12" className="mb-2 mt-2">
                 <Card body>
-                  <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                  <CardText>
+                    With supporting text below as a natural lead-in to
+                    additional content.
+                  </CardText>
                 </Card>
               </Col>
               <Col sm="12">
                 <Card body>
                   <CardTitle></CardTitle>
                   <ListGroupItem>
-                    <ListGroupItemHeading>Reservations ID : #{data.id_reservation}</ListGroupItemHeading>
+                    <ListGroupItemHeading>
+                      Reservations ID : #{data.id_reservation}
+                    </ListGroupItemHeading>
                     <ListGroupItemText>
                       <Media>
                         <Media left href="#"></Media>
@@ -75,9 +82,14 @@ class ReservationsDetails extends Component {
                           <Row>
                             <Col md="12">
                               <CardBody>
-                                <CardTitle className="text-bold">Booking Code</CardTitle>
+                                <CardTitle className="text-bold">
+                                  Booking Code
+                                </CardTitle>
                                 <CardSubtitle>
-                                  <Badge color={data.check_in ? 'success' : 'warning'}>
+                                  <Badge
+                                    color={
+                                      data.check_in ? 'success' : 'warning'
+                                    }>
                                     <h5>#{data.booking_code}</h5>
                                   </Badge>
                                 </CardSubtitle>
@@ -129,9 +141,13 @@ class ReservationsDetails extends Component {
                                           <td>{data.gender}</td>
                                           <td>
                                             {data.check_in ? (
-                                              <Badge color="success">{'Completed'}</Badge>
+                                              <Badge color="success">
+                                                {'Completed'}
+                                              </Badge>
                                             ) : (
-                                              <Badge color="warning">{'Wait for Check-In'}</Badge>
+                                              <Badge color="warning">
+                                                {'Wait for Check-In'}
+                                              </Badge>
                                             )}
                                           </td>
                                         </tr>

@@ -1,6 +1,16 @@
 import React, { useContext, useEffect } from 'react'
 import Select from 'react-select'
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip } from 'reactstrap'
+import {
+  Button,
+  Container,
+  Col,
+  Row,
+  Card,
+  CardTitle,
+  CardText,
+  Table,
+  UncontrolledTooltip
+} from 'reactstrap'
 
 // Local NModules
 import { BusContext } from '../../context/BusContext'
@@ -16,14 +26,18 @@ function Buses() {
       <Layout>
         <Container fluid={true}>
           <p>
-            The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
-            larger screens. When toggled using the Button below, the menu will change.
+            The starting state of the menu will appear collapsed on smaller
+            screens, and will appear non-collapsed on larger screens. When
+            toggled using the Button below, the menu will change.
           </p>
           <Row>
             <Col sm="6">
               <Card body>
                 <CardTitle>All Schedules</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                <CardText>
+                  With supporting text below as a natural lead-in to additional
+                  content.
+                </CardText>
                 <Button>Go somewhere</Button>
               </Card>
             </Col>
@@ -66,7 +80,6 @@ function Buses() {
                       ))}
                   </tbody>
                 </Table>
-
                 <Button>Go somewhere</Button>
               </Card>
             </Col>
