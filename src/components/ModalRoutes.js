@@ -16,8 +16,8 @@ export default class ModalRoutes extends Component {
   render() {
     return (
       <div>
-        <Modal isOpen={this.state.showModal} toggle={() => this.context.openModal()}>
-          <ModalHeader toggle={() => this.context.openModal()}>Add new route</ModalHeader>
+        <Modal isOpen={this.state.showModal} toggle={() => this.props.openModal()}>
+          <ModalHeader toggle={() => this.props.openModal()}>Add new route</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.context.addData}>
               <Row>
