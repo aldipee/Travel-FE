@@ -16,7 +16,6 @@ body {
   font-size: 19px;
 }
 
-
 body {
   overflow-x: hidden;
 }
@@ -25,7 +24,7 @@ body {
   min-height: 100vh;
   margin-left: -15rem;
 
-  transition: margin .25s ease-out;
+  transition: margin 0.25s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -58,4 +57,31 @@ body {
   #wrapper.toggled #sidebar-wrapper {
     margin-left: -15rem;
   }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.placeholder {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 1000px 104px;
+  height: 30px;
+  width: auto;
+  position: relative;
+  overflow: hidden;
+}
+.img-user{
+  width: 30%;
 }

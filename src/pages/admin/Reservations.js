@@ -4,55 +4,47 @@ import Select from 'react-select'
 import axios from 'axios'
 import config from '../../utils/config'
 
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip } from 'reactstrap'
-import Icon from '@mdi/react'
-import { mdiFileEditOutline, mdiDeleteOutline } from '@mdi/js'
+import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, FormGroup, Label, Input } from 'reactstrap'
 
 import { SchedulesContext } from '../../context/SchedulesContext'
 import Layout from '../layout/Dashboard.layout'
 
-class Buses extends Component {
+class Reservations extends Component {
   static contextType = SchedulesContext
   state = {
     data: [],
-    agents: []
-  }
-  loadAgents = () => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
-    axios.get(config.DATA_URL.concat('agents')).then(data => {
-      let agents = data.data.data.map(dest => ({
-        value: `${dest.agent_id}`,
-        label: `${dest.agent_name} `
-      }))
-      this.setState({
-        agents
-      })
-    })
+    search: '',
+    isLoading: true
   }
 
-  selectAgent = e => {
+  loadData = query => {
+    query = (query && `reservations/all${query}`) || 'reservations/all'
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     axios
-      .get(config.DATA_URL.concat(`bus/${e.value}`))
+      .get(config.DATA_URL.concat(query))
       .then(data => {
-        console.log(data)
-        if (data.status === 200) {
-          this.setState({
-            data: data.data.data
-          })
-        }
+        this.setState({
+          data: data.data.data,
+          isLoading: false
+        })
       })
       .catch(err => {
         console.log(err)
       })
   }
   componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
-    this.loadAgents()
+    this.loadData()
+  }
+  searchData = e => {
+    this.setState({
+      search: e.currentTarget.value
+    })
+    this.props.history.push({ search: `?search[key]=fullName&search[value]=${e.currentTarget.value}` })
+    this.loadData(this.props.history.location.search)
   }
 
   render() {
-    // Destract Destination Value
-
     return (
       <>
         <Layout>
@@ -64,7 +56,7 @@ class Buses extends Component {
             <Row>
               <Col sm="6">
                 <Card body>
-                  <CardTitle>All Schedules</CardTitle>
+                  <CardTitle>All Users</CardTitle>
                   <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
                   <Button>Go somewhere</Button>
                 </Card>
@@ -78,15 +70,18 @@ class Buses extends Component {
                         <Button onClick={this.context.openModal}>Add Routes</Button>
                       </Col>
                     </Row>
+
                     <Row>
-                      <Col sm="6">
-                        <Select
-                          onChange={this.selectAgent}
-                          name="agent"
-                          options={this.state.agents}
-                          isSearchable={true}
-                          isClearable={true}
-                        />
+                      <Col sm="3">
+                        <FormGroup>
+                          <Input
+                            type="text"
+                            name="name"
+                            value={this.state.search}
+                            onChange={this.searchData}
+                            placeholder="Search by name.."
+                          />
+                        </FormGroup>
                       </Col>
                       <Col sm="6"></Col>
                     </Row>
@@ -95,8 +90,13 @@ class Buses extends Component {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Bus Name</th>
-                        <th>Total Seat</th>
+                        <th>ID Reservations</th>
+                        <th>Status</th>
+                        <th>Passenger Name</th>
+                        <th>Boarding Time</th>
+                        <th>Date</th>
+                        <th>Gender</th>
+                        <th>Routes</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -104,8 +104,17 @@ class Buses extends Component {
                         this.state.data.map((data, index) => (
                           <tr>
                             <th scope="row">{index + 1}</th>
-                            <td>{data && data.name}</td>
-                            <td> {data && data.total_seat}</td>
+                            <td>
+                              <Link to={`${this.props.match.path}/details/${data && data.id_reservation}`}>
+                                {data && `#${data.id_reservation}`}{' '}
+                              </Link>
+                            </td>
+                            <td>{data && `${data.check_in ? 'Completed' : 'Waiting Check-in'}`}</td>
+                            <td>{data && data.fullName}</td>
+                            <td> {data && data.time}</td>
+                            <td>{data && data.date}</td>
+                            <td>{data && data.gender}</td>
+                            <td>{data && `${data.origin} - ${data.destination}`}</td>
                           </tr>
                         ))}
                     </tbody>
@@ -122,4 +131,4 @@ class Buses extends Component {
   }
 }
 
-export default Buses
+export default Reservations

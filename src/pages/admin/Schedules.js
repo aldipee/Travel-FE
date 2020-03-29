@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import Select from 'react-select'
 import axios from 'axios'
 import config from '../../utils/config'
+import formSerialize from 'form-serialize'
 
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip } from 'reactstrap'
-import Icon from '@mdi/react'
-import { mdiFileEditOutline, mdiDeleteOutline } from '@mdi/js'
+import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, Input, Form } from 'reactstrap'
+
+
 
 import { SchedulesContext } from '../../context/SchedulesContext'
 import Layout from '../layout/Dashboard.layout'
@@ -16,7 +17,12 @@ class Schedules extends Component {
   state = {
     data: [],
     routes: [],
-    dataSchedules: []
+    dataSchedules: [],
+    date: new Date()
+  }
+
+  dateChange = e => {
+    this.setState({ date: e.currentTarget.value })
   }
   loadRoutes = () => {
     axios
@@ -55,14 +61,23 @@ class Schedules extends Component {
       origin: value[0],
       destination: value[1]
     }
-    console.log(data)
-    this.props.history.push({ search: `?origin=${data.origin}&destination=${data.destination}` })
+    this.setState({
+      selectedRoute: data
+    })
+
+
+  }
+
+  searchData = e => {
+    this.props.history.push({ search: `?origin=${this.state.selectedRoute.origin}&destination=${this.state.selectedRoute.destination}&date=${this.state.date}` })
     this.loadSchedules()
   }
+
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     this.loadRoutes()
   }
+
 
   render() {
     // Destract Destination Value
@@ -71,11 +86,8 @@ class Schedules extends Component {
       <>
         <Layout>
           <Container fluid={true}>
-            <p>
-              The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
-              larger screens. When toggled using the Button below, the menu will change.
-            </p>
-            <Row>
+
+            <Row className='mx-2 my-2'>
               <Col sm="6">
                 <Card body>
                   <CardTitle>All Schedules</CardTitle>
@@ -83,29 +95,42 @@ class Schedules extends Component {
                   <Button>Go somewhere</Button>
                 </Card>
               </Col>
-              <Col sm="12">
+              <Col sm="12" className='mt-3'>
                 <Card body>
                   <CardTitle>
                     <Row>
                       <Col sm="6">All Routes</Col>
                       <Col sm="6" className="text-right">
-                        <Button onClick={this.context.openModal}>Add Routes</Button>
+
                       </Col>
                     </Row>
                     <Row>
-                      <Col sm="6">
-                        <Select
-                          onChange={this.selectDest}
-                          name="origDest"
-                          options={this.state.routes}
-                          isSearchable={true}
-                          isClearable={true}
-
-                        />
-                      </Col>
-                      <Col sm="6">
-
-
+                      <Col sm='12'>
+                        <Form inline>
+                          <Col sm="6">
+                            <Select
+                              required
+                              onChange={this.selectDest}
+                              name="origDest"
+                              options={this.state.routes}
+                              isSearchable={true}
+                              isClearable={true}
+                            />
+                          </Col>
+                          <Col sm="4">
+                            <Input
+                              type="date"
+                              name="date"
+                              id="exampleDatetime"
+                              required
+                              placeholder="datetime placeholder"
+                              onChange={this.dateChange}
+                            />
+                          </Col>
+                          <Col sm="2" className='text-left'>
+                            <Button onClick={this.searchData} >Search</Button>
+                          </Col>
+                        </Form>
                       </Col>
                     </Row>
                   </CardTitle>
@@ -127,32 +152,18 @@ class Schedules extends Component {
                         this.state.dataSchedules.map((data, index) => (
                           <tr>
                             <th scope="row">{index + 1}</th>
-                            <td>
-                              {data && data.agent}
-                            </td>
-                            <td>
-                              {data && data.bus_name}
-                            </td>
+                            <td>{data && data.agent}</td>
+                            <td>{data && data.bus_name}</td>
                             <td> {data && data.price}</td>
-                            <td>
-                              {data && data.date}
-                            </td>
-                            <td>
-                              {data && data.time}
-                            </td>
-                            <td>
-                              {data && data.seatsAvaiable.length}
-                            </td>
-                            <td>
-                              {data && data.total_seat}
-                            </td>
-
+                            <td>{data && data.date}</td>
+                            <td>{data && data.time}</td>
+                            <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
+                            <td>{data && data.total_seat}</td>
                           </tr>
                         ))}
                     </tbody>
                   </Table>
 
-                  <Button>Go somewhere</Button>
                 </Card>
               </Col>
             </Row>

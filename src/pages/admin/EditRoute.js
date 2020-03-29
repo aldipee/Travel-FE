@@ -62,7 +62,7 @@ class EditRoutes extends Component {
               The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
               larger screens. When toggled using the Button below, the menu will change.
             </p>
-            <Row>
+            <Row className='mx-2'>
               <Card body>
                 <CardTitle>All Routes</CardTitle>
                 <Col sm="12">

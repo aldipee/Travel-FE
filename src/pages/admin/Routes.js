@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import formSerizalize from 'form-serialize'
 
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip } from 'reactstrap'
+import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip, FormGroup, Form, Input } from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline } from '@mdi/js'
 
@@ -15,6 +16,15 @@ class Routes extends Component {
   componentDidMount() {
     this.context.loadData()
   }
+  search = (e) => {
+    e.preventDefault()
+    const data = formSerizalize(e.target, { hash: true })
+    console.log(data)
+    const query = `?${data.searchValue ? `search[value]=${data.searchValue}&` : ''}limit=${data.limit}`
+
+    this.props.history.push({ search: query })
+    this.context.loadData(this.props.history.location.search)
+  }
 
   render() {
     return (
@@ -23,16 +33,12 @@ class Routes extends Component {
 
         <Layout>
           <Container fluid={true}>
-            <p>
-              The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
-              larger screens. When toggled using the Button below, the menu will change.
-            </p>
+
             <Row>
-              <Col sm="6">
+              <Col sm="6" className='my-3'>
                 <Card body>
                   <CardTitle>Special Title Treatment</CardTitle>
                   <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                  <Button>Go somewhere</Button>
                 </Card>
               </Col>
               <Col sm="12">
@@ -44,6 +50,30 @@ class Routes extends Component {
                         <Button onClick={this.context.openModal}>Add Routes</Button>
                       </Col>
                     </Row>
+                    <Row className='mt-3 mb-1'>
+                      <Col sm='12'>
+                        <Form inline onSubmit={this.search}>
+                          <FormGroup className="mr-4">
+                            <Input
+                              type="text"
+                              name="searchValue"
+
+                              placeholder="Search by name.."
+                            />
+                          </FormGroup>
+                          <Col>
+                            <FormGroup className="mr-4">
+                              <Input type="select" name="limit" onChange={this.selectHandlers}>
+                                <option value="5">Show 5 data</option>
+                                <option value="25">Show 25 data</option>
+                                <option value="50">Show 50 data</option>
+                              </Input>
+                            </FormGroup>
+                          </Col>
+                          <Button>Go!</Button>
+                        </Form>
+                      </Col>
+                    </Row>
                   </CardTitle>
                   <Table>
                     <thead>
@@ -52,7 +82,6 @@ class Routes extends Component {
                         <th>Depature</th>
                         <th>Destionation</th>
                         <th>Distance (KM)</th>
-                        <th>Total Schedules</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -68,7 +97,7 @@ class Routes extends Component {
                               {data && data.destination} ({data && data.destination_code})
                             </td>
                             <td> {data && data.distance}</td>
-                            <td>Dom</td>
+
                             <td>
                               <Link to={`${this.props.match.path}/edit/${data && data.id}`}>
                                 <Icon id="EditData" path={mdiFileEditOutline} size={1} color="#8d9498" />
@@ -88,7 +117,6 @@ class Routes extends Component {
                     </tbody>
                   </Table>
 
-                  <Button>Go somewhere</Button>
                 </Card>
               </Col>
             </Row>

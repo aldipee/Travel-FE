@@ -14,10 +14,12 @@ export default class Provider extends React.Component {
         showModal: false,
         formData: {}
     }
-    loadData = () => {
+    loadData = (query) => {
+        const req = (query && `routes${query}`) || 'routes?limit=5'
+
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
         axios
-            .get(config.DATA_URL.concat('routes'))
+            .get(config.DATA_URL.concat(req))
             .then(data => {
                 this.setState({
                     data: data.data.data
