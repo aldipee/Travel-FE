@@ -4,7 +4,7 @@ import formSerizalize from 'form-serialize'
 
 import { Button, Container, Col, Row, Card, CardTitle, CardText, Table, UncontrolledTooltip, FormGroup, Form, Input } from 'reactstrap'
 import Icon from '@mdi/react'
-import { mdiFileEditOutline, mdiDeleteOutline } from '@mdi/js'
+import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
 
 import { RoutesContext } from '../../context/RouteContext'
 import Layout from '../layout/Dashboard.layout'
@@ -24,6 +24,9 @@ class Routes extends Component {
 
     this.props.history.push({ search: query })
     this.context.loadData(this.props.history.location.search)
+  }
+  sort = (e) => {
+    console.log(e.target.name)
   }
 
   render() {
@@ -65,8 +68,8 @@ class Routes extends Component {
                             <FormGroup className="mr-4">
                               <Input type="select" name="limit" onChange={this.selectHandlers}>
                                 <option value="5">Show 5 data</option>
-                                <option value="25">Show 25 data</option>
-                                <option value="50">Show 50 data</option>
+                                <option value="10">Show 10 data</option>
+                                <option value="20">Show 20 data</option>
                               </Input>
                             </FormGroup>
                           </Col>
@@ -78,7 +81,7 @@ class Routes extends Component {
                   <Table>
                     <thead>
                       <tr>
-                        <th>#</th>
+                        <th name='no' onClick={this.sort}># <Icon path={mdiSort} size={1} color="#8d9498" /></th>
                         <th>Depature</th>
                         <th>Destionation</th>
                         <th>Distance (KM)</th>
@@ -89,7 +92,7 @@ class Routes extends Component {
                       {this.context.data &&
                         this.context.data.map((data, index) => (
                           <tr>
-                            <th scope="row">{index + 1}</th>
+                            <th scope="row">{this.context.startPageFrom + index}</th>
                             <td>
                               {data && data.origin} ({data && data.origin_code})
                             </td>
@@ -116,7 +119,14 @@ class Routes extends Component {
                         ))}
                     </tbody>
                   </Table>
-
+                  <Row>
+                    <Col md={6} className='text-center'>
+                      <Button disabled={this.context.pageInfo.prevLink ? false : true} onClick={this.context.prevData} color='primary'>Prev</Button>
+                    </Col>
+                    <Col md={6} className='text-center'>
+                      <Button disabled={this.context.pageInfo.nextLink ? false : true} onClick={this.context.nextData} color='primary'>Next</Button>
+                    </Col>
+                  </Row>
                 </Card>
               </Col>
             </Row>

@@ -8,6 +8,7 @@ import AgentsPage from './pages/admin/Agents'
 import RoutesPage from './pages/admin/Routes'
 import EditRoutes from './pages/admin/EditRoute'
 import SchedulesPage from './pages/admin/Schedules'
+import ProfilePage from './pages/admin/AdminProfile'
 import BusSchedulesPage from './pages/admin/Buses'
 import UsersPage from './pages/admin/Users'
 import UserDetails from './pages/admin/UserDetails'
@@ -28,6 +29,7 @@ const App = () => {
             <Switch></Switch>
             <PrivateRoute component={Dashboard} path="/" exact />
             <PrivateRoute component={AgentsPage} path="/agents" exact />
+            <PrivateRoute component={ProfilePage} path="/profile" exact />
             <PrivateRoute component={ReservationsPage} path="/reservations" exact />
             <PrivateRoute component={ReservationsDetails} path="/reservations/details/:id" exact />
             <PrivateRoute component={RoutesPage} path="/routes" exact />

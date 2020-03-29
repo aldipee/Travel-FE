@@ -26,7 +26,7 @@ class Schedules extends Component {
   }
   loadRoutes = () => {
     axios
-      .get(config.DATA_URL.concat('routes'))
+      .get(config.DATA_URL.concat('routes?show=all'))
       .then(data => {
         let routes = data.data.data.map(dest => ({
           value: `${dest.origin_code}-${dest.destination_code}`,
