@@ -7,11 +7,15 @@ export const BusContext = React.createContext()
 export default class Provider extends React.Component {
   state = {
     data: [],
-    agents: []
+    agents: [],
+    isLoading: true
   }
-
+  componentDidMount() {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token_user')}`
+  }
   loadAgents = () => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     axios.get(config.DATA_URL.concat('agents')).then(data => {
       let agents = data.data.data.map(dest => ({
         value: `${dest.agent_id}`,
@@ -24,9 +28,9 @@ export default class Provider extends React.Component {
   }
   selectAgent = e => {
     axios
-      .get(config.DATA_URL.concat(`bus/${e.value}`))
+      .get(config.DATA_URL.concat(`bus/agent/${e.value}`))
       .then(data => {
-        console.log(data)
+        console.log('from context', data.data.data)
         if (data.status === 200) {
           this.setState({
             data: data.data.data
@@ -37,7 +41,12 @@ export default class Provider extends React.Component {
         console.log(err)
       })
   }
-  componentWillMount() {}
+
+  loadData = async () => {
+    this.setState({ isLoading: true })
+    const res = await axios.get(config.DATA_URL.concat('bus'))
+    this.setState({ data: res.data.data, isLoading: false })
+  }
 
   render() {
     return (
@@ -45,9 +54,11 @@ export default class Provider extends React.Component {
         value={{
           data: this.state.data,
           agents: this.state.agents,
+          isLoading: this.state.isLoading,
           actions: {
             loadAgents: this.loadAgents,
-            selectAgent: this.selectAgent
+            selectAgent: this.selectAgent,
+            loadData: this.loadData
           }
         }}>
         {this.props.children}

@@ -7,7 +7,6 @@ import {
   Collapse,
   DropdownToggle,
   UncontrolledDropdown,
-  NavbarText,
   DropdownMenu,
   DropdownItem,
   Button
@@ -31,7 +30,7 @@ const DashboardNavbar = () => {
                 </Link>
                 <DropdownItem divider />
                 <DropdownItem>
-                  <Link to="/profile">Logout</Link>
+                  <Link to="/logout">Logout</Link>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

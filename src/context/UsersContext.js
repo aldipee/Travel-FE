@@ -14,6 +14,9 @@ export default class Provider extends React.Component {
   }
 
   searchData = query => {
+    this.setState({
+      isLoading: true
+    })
     query = (query && `users/${query}&lime=5`) || 'users?limit=5'
     axios
       .get(config.DATA_URL.concat(query))

@@ -29,7 +29,12 @@ export default class Provider extends React.Component {
 
   render() {
     return (
-      <ReservationsContext.Provider value={{ data: this.state.data, actions: { loadData: this.loadData } }}>
+      <ReservationsContext.Provider
+        value={{
+          data: this.state.data,
+          isLoading: this.state.isLoading,
+          actions: { loadData: this.loadData }
+        }}>
         {this.props.children}
       </ReservationsContext.Provider>
     )

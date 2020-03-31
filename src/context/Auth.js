@@ -13,9 +13,15 @@ export default class Provider extends React.Component {
   componentWillMount() {
     if (localStorage.getItem('token_user')) {
       this.setState({
-        isLogin: true
+        isLogin: true,
+        role: parseInt(localStorage.getItem('role'))
       })
     }
+  }
+  Logout = () => {
+    this.setState({
+      isLogin: false
+    })
   }
 
   AuthLogin = async (username, password) => {
@@ -24,8 +30,10 @@ export default class Provider extends React.Component {
       const res = await axios.post('http://localhost:5001/auth/login', data)
       if (res.data.token) {
         localStorage.setItem('token_user', res.data.token)
+        localStorage.setItem('role', res.data.role)
         this.setState({
-          isLogin: true
+          isLogin: true,
+          role: res.data.role
         })
         return true
       } else {
@@ -42,7 +50,13 @@ export default class Provider extends React.Component {
   render() {
     return (
       <AuthContext.Provider
-        value={{ username: this.state.username, isLogin: this.state.isLogin, AuthLogin: this.AuthLogin }}>
+        value={{
+          username: this.state.username,
+          isLogin: this.state.isLogin,
+          AuthLogin: this.AuthLogin,
+          Logout: this.Logout,
+          role: this.state.role
+        }}>
         {this.props.children}
       </AuthContext.Provider>
     )

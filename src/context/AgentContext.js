@@ -28,6 +28,7 @@ export default class Provider extends React.Component {
       <AgentContext.Provider
         value={{
           data: this.state.data,
+          isLoading: this.state.isLoading,
           actions: {
             loadData: this.loadData
           }

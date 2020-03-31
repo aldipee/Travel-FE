@@ -4,11 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-
+import AuthProvider from '../src/context/Auth'
 ReactDOM.render(
-  <React.StrictMode>
+  <AuthProvider>
     <App />
-  </React.StrictMode>,
+  </AuthProvider>,
   document.getElementById('root')
 )
 
