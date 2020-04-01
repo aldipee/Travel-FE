@@ -1,27 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Button,
   Container,
   Col,
   Row,
   Card,
   CardTitle,
-  CardText,
   Table,
   FormGroup,
   Input
 } from 'reactstrap'
-
-import { ReservationsContext } from '../../context/ReservationsContext'
 import { converDate } from '../../utils/conver'
+
+// Redux
+import { connect } from 'react-redux'
+import { getReservations } from '../../redux/actions/ReservationsActions'
 function Reservations(props) {
-  const reservationsData = useContext(ReservationsContext)
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    reservationsData.actions.loadData()
+    props.getReservations()
   }, [])
 
   const searchData = e => {
@@ -29,7 +27,7 @@ function Reservations(props) {
     props.history.push({
       search: `?search[key]=fullName&search[value]=${e.currentTarget.value}`
     })
-    reservationsData.actions.loadData(props.history.location.search)
+    // reservationsData.actions.loadData(props.history.location.search)
   }
 
   const item = (
@@ -47,16 +45,20 @@ function Reservations(props) {
         </tr>
       </thead>
       <tbody>
-        {reservationsData.data &&
-          reservationsData.data.map((data, index) => (
+        {props.reservations.data &&
+          props.reservations.data.map((data, index) => (
             <tr>
               <th scope="row">{index + 1}</th>
               <td>
-                <Link to={`${props.match.path}/details/${data && data.id_reservation}`}>
+                <Link
+                  to={`${props.match.path}/details/${data &&
+                    data.id_reservation}`}>
                   {data && `#${data.id_reservation}`}{' '}
                 </Link>
               </td>
-              <td>{data && `${data.check_in ? 'Completed' : 'Waiting Check-in'}`}</td>
+              <td>
+                {data && `${data.check_in ? 'Completed' : 'Waiting Check-in'}`}
+              </td>
               <td>{data && data.fullName}</td>
               <td> {data && data.time}</td>
               <td>{data && data.date && converDate(data.date)}</td>
@@ -158,11 +160,18 @@ function Reservations(props) {
                 <Col sm="6"></Col>
               </Row>
             </CardTitle>
-            <Table>{reservationsData.isLoading ? placeholder : item}</Table>
+            <Table>{props.reservations.isLoading ? placeholder : item}</Table>
           </Card>
         </Col>
       </Row>
     </Container>
   )
 }
-export default Reservations
+const mapStateToProps = state => {
+  return {
+    reservations: state.data
+  }
+}
+const mapDispatchToProps = { getReservations }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reservations)

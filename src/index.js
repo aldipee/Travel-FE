@@ -5,10 +5,19 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import AuthProvider from '../src/context/Auth'
+
+//Redux
+import { store, pesistor } from './redux/store'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 ReactDOM.render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>,
+  <Provider store={store}>
+    <PersistGate persistor={pesistor}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </PersistGate>
+  </Provider>,
   document.getElementById('root')
 )
 
@@ -16,7 +25,7 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 
-if (module.hot) {
-  module.hot.accept()
-}
-serviceWorker.unregister()
+// if (module.hot) {
+//   module.hot.accept()
+// }
+// serviceWorker.unregister()
