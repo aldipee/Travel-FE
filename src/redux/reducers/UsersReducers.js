@@ -1,9 +1,5 @@
-import {
-  SET_LOADING_RESERVATIONS,
-  GET_RESERVATIONS_DATA,
-  ERROR_RESERVATIONS,
-  GET_RESERVATIONS_BY_ID
-} from '../actions/types'
+import { GET_ALL_USERS, GET_USER_BY_ID, SET_LOADING_USERS, ERROR_USERS } from '../actions/types'
+
 const initialState = {
   data: [],
   singleData: {},
@@ -13,26 +9,27 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_LOADING_RESERVATIONS: {
+    case GET_USER_BY_ID: {
       return {
         ...state,
-        isLoading: true
+        singleData: action.payload,
+        isLoading: false
       }
     }
-    case GET_RESERVATIONS_DATA: {
+    case GET_ALL_USERS: {
       return {
         ...state,
         data: action.payload,
         isLoading: false
       }
     }
-    case GET_RESERVATIONS_BY_ID: {
+    case SET_LOADING_USERS: {
       return {
         ...state,
-        singleData: action.payload
+        isLoading: true
       }
     }
-    case ERROR_RESERVATIONS: {
+    case ERROR_USERS: {
       return {
         ...state,
         error: action.payload
@@ -40,7 +37,9 @@ export default function(state = initialState, action) {
     }
 
     default: {
-      return { state }
+      return {
+        state
+      }
     }
   }
 }

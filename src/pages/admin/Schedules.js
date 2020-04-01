@@ -1,17 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Select from 'react-select'
-import {
-  Button,
-  Container,
-  Col,
-  Row,
-  Card,
-  CardTitle,
-  CardText,
-  Table,
-  Input,
-  Form
-} from 'reactstrap'
+import { Button, Container, Col, Row, Card, CardTitle, Table, Input, Form } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getSchedules, loadRoutes } from '../../redux/actions/SchedulesActions'
 
@@ -97,11 +86,7 @@ function Schedules(props) {
                       <td> {data && data.price}</td>
                       <td>{data && data.date}</td>
                       <td>{data && data.time}</td>
-                      <td>
-                        {data &&
-                          data.seatsAvaiable &&
-                          data.seatsAvaiable.length}
-                      </td>
+                      <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
                       <td>{data && data.total_seat}</td>
                     </tr>
                   ))}

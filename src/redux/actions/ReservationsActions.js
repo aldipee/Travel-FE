@@ -3,12 +3,11 @@ import config from '../../utils/config'
 import {
   GET_RESERVATIONS_DATA,
   ERROR_RESERVATIONS,
-  SET_LOADING_RESERVATIONS
+  SET_LOADING_RESERVATIONS,
+  GET_RESERVATIONS_BY_ID
 } from './types'
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-  'token_user'
-)}`
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
 
 export const getReservations = query => async dispatch => {
   try {
@@ -21,6 +20,24 @@ export const getReservations = query => async dispatch => {
     })
   } catch (error) {
     console.error('Error from Reservations ACtiond', error)
+    dispatch({
+      type: ERROR_RESERVATIONS,
+      payload: error.response.data
+    })
+  }
+}
+
+export const getReservationById = id => async dispatch => {
+  try {
+    setLoading()
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
+    const res = await axios.get(config.DATA_URL.concat(`reservations/${id}`))
+    dispatch({
+      type: GET_RESERVATIONS_BY_ID,
+      payload: res.data.data
+    })
+  } catch (error) {
+    console.error('Error', error)
     dispatch({
       type: ERROR_RESERVATIONS,
       payload: error.response.data

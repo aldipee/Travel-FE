@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import config from '../../utils/config'
+import { connect } from 'react-redux'
 import { convertToRupiah, converDate } from '../../utils/conver'
 
 import {
@@ -21,38 +20,14 @@ import {
   CardSubtitle,
   Label
 } from 'reactstrap'
-
-import { SchedulesContext } from '../../context/SchedulesContext'
+import { getUserById } from '../../redux/actions/UsersActions'
 
 class UserDetails extends Component {
-  static contextType = SchedulesContext
-  state = {
-    profileData: {},
-    reservationsData: [],
-    isLoading: true
-  }
-
-  loadData = id => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
-    axios
-      .get(config.DATA_URL.concat(`users/profile/${this.props.match.params.id}`))
-      .then(data => {
-        this.setState({
-          profileData: data.data.profileData,
-          reservationsData: data.data.reservationsData,
-          isLoading: false
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
   componentDidMount() {
-    this.loadData()
+    this.props.getUserById(this.props.match.params.id)
   }
-
   render() {
-    const { profileData, reservationsData } = this.state
+    const { profileData, reservationsData, isLoading } = this.props
     return (
       <>
         <Container fluid={true}>
@@ -172,8 +147,8 @@ class UserDetails extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.reservationsData &&
-                            this.state.reservationsData.map((data, index) => (
+                          {reservationsData &&
+                            reservationsData.map((data, index) => (
                               <tr>
                                 <td>{index + 1}</td>
                                 <td>{data && data.reservation_id}</td>
@@ -184,7 +159,6 @@ class UserDetails extends Component {
                                 <td>{data && data.schedule_time}</td>
                                 <td>{data && `${data.check_in ? 'Completed' : 'Waiting'}`}</td>
                                 <td>{data && `${data.origin}-${data.destination}`}</td>
-
                                 <td>
                                   {data && data.totalPrice && convertToRupiah(data.totalPrice)}
                                 </td>
@@ -204,4 +178,12 @@ class UserDetails extends Component {
   }
 }
 
-export default UserDetails
+const mapStateToProps = state => {
+  return {
+    profileData: state.usersData.singleData && state.usersData.singleData.userProfile,
+    reservationsData: state.usersData.singleData && state.usersData.singleData.userReservations,
+    isLoading: state.usersData.isLoading
+  }
+}
+
+export default connect(mapStateToProps, { getUserById })(UserDetails)

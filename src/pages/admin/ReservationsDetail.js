@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-
-import axios from 'axios'
-import config from '../../utils/config'
 import { converDate } from '../../utils/conver'
 import {
   Container,
@@ -20,38 +17,16 @@ import {
   CardLink,
   CardSubtitle
 } from 'reactstrap'
-
-import { SchedulesContext } from '../../context/SchedulesContext'
+import { connect } from 'react-redux'
+import { getReservationById } from '../../redux/actions/ReservationsActions'
 
 class ReservationsDetails extends Component {
-  static contextType = SchedulesContext
-  state = {
-    data: {},
-    isLoading: true
-  }
-
-  loadData = id => {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_user')}`
-    axios
-      .get(config.DATA_URL.concat(`reservations/${this.props.match.params.id}`))
-      .then(data => {
-        this.setState({
-          data: data.data.data,
-          isLoading: false
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
   componentDidMount() {
-    this.loadData()
+    this.props.getReservationById(this.props.match.params.id)
   }
 
   render() {
-    const { data } = this.state
+    const { data } = this.props
     return (
       <>
         <Container fluid={true}>
@@ -59,8 +34,7 @@ class ReservationsDetails extends Component {
             <Col sm="12" className="mb-2 mt-2">
               <Card body>
                 <CardText>
-                  With supporting text below as a natural lead-in to additional
-                  content.
+                  With supporting text below as a natural lead-in to additional content.
                 </CardText>
               </Card>
             </Col>
@@ -69,7 +43,7 @@ class ReservationsDetails extends Component {
                 <CardTitle></CardTitle>
                 <ListGroupItem>
                   <ListGroupItemHeading>
-                    Reservations ID : #{data.id_reservation}
+                    Reservations ID : #{data && data.id_reservation}
                   </ListGroupItemHeading>
                   <ListGroupItemText>
                     <Media>
@@ -78,13 +52,10 @@ class ReservationsDetails extends Component {
                         <Row>
                           <Col md="12">
                             <CardBody>
-                              <CardTitle className="text-bold">
-                                Booking Code
-                              </CardTitle>
+                              <CardTitle className="text-bold">Booking Code</CardTitle>
                               <CardSubtitle>
-                                <Badge
-                                  color={data.check_in ? 'success' : 'warning'}>
-                                  <h5>#{data.booking_code}</h5>
+                                <Badge color={data && data.check_in ? 'success' : 'warning'}>
+                                  <h5>#{data && data.booking_code}</h5>
                                 </Badge>
                               </CardSubtitle>
                             </CardBody>
@@ -105,14 +76,12 @@ class ReservationsDetails extends Component {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <th>{data.origin}</th>
-                                        <td>{data.destination}</td>
-                                        <td>{data.time}</td>
-                                        <td>
-                                          {data.date && converDate(data.date)}
-                                        </td>
-                                        <td>{data.bus_id}</td>
-                                        <td>{data.schedule_id}</td>
+                                        <th>{data && data.origin}</th>
+                                        <td>{data && data.destination}</td>
+                                        <td>{data && data.time}</td>
+                                        <td>{data && data.date && converDate(data.date)}</td>
+                                        <td>{data && data.bus_id}</td>
+                                        <td>{data && data.schedule_id}</td>
                                       </tr>
                                     </tbody>
                                   </Table>
@@ -131,19 +100,15 @@ class ReservationsDetails extends Component {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td>{data.fullName}</td>
-                                        <td>{data.passenger_id_number}</td>
-                                        <td>{data.passenger_id_type}</td>
-                                        <td>{data.gender}</td>
+                                        <td>{data && data.fullName}</td>
+                                        <td>{data && data.passenger_id_number}</td>
+                                        <td>{data && data.passenger_id_type}</td>
+                                        <td>{data && data.gender}</td>
                                         <td>
-                                          {data.check_in ? (
-                                            <Badge color="success">
-                                              {'Completed'}
-                                            </Badge>
+                                          {data && data.check_in ? (
+                                            <Badge color="success">{'Completed'}</Badge>
                                           ) : (
-                                            <Badge color="warning">
-                                              {'Wait for Check-In'}
-                                            </Badge>
+                                            <Badge color="warning">{'Wait for Check-In'}</Badge>
                                           )}
                                         </td>
                                       </tr>
@@ -169,4 +134,11 @@ class ReservationsDetails extends Component {
   }
 }
 
-export default ReservationsDetails
+const mapStateToProps = state => {
+  return {
+    data: state.dataReservations.singleData
+  }
+}
+
+const mapDispatchToProps = { getReservationById }
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationsDetails)

@@ -29,6 +29,7 @@ export default function(state = initialState, action) {
         isLoading: false
       }
     }
+
     case SET_LOADING_SCHEDULES: {
       return {
         ...state,
