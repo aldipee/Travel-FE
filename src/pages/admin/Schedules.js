@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Select from 'react-select'
-
 import {
   Button,
   Container,
@@ -13,11 +12,10 @@ import {
   Input,
   Form
 } from 'reactstrap'
-
-import { SchedulesContext } from '../../context/SchedulesContext'
+import { connect } from 'react-redux'
+import { getSchedules, loadRoutes } from '../../redux/actions/SchedulesActions'
 
 function Schedules(props) {
-  const schedulesData = useContext(SchedulesContext)
   const [date, setDate] = useState(new Date())
   const [selectedRoute, setSelectedRoute] = useState('')
   const dateChange = e => setDate(e.currentTarget.value)
@@ -33,24 +31,15 @@ function Schedules(props) {
     props.history.push({
       search: `?origin=${selectedRoute.origin}&destination=${selectedRoute.destination}&date=${date}`
     })
-    schedulesData.actions.loadSchedules(props.history.location.search)
+    props.getSchedules(props.history.location.search)
   }
   useEffect(() => {
-    schedulesData.actions.loadRoutes()
+    props.loadRoutes()
   }, [])
 
   return (
     <Container fluid={true}>
       <Row className="mx-2 my-2">
-        <Col sm="6">
-          <Card body>
-            <CardTitle>All Schedules</CardTitle>
-            <CardText>
-              With supporting text below as a natural lead-in to additional content.
-            </CardText>
-            <Button>Go somewhere</Button>
-          </Card>
-        </Col>
         <Col sm="12" className="mt-3">
           <Card body>
             <CardTitle>
@@ -63,10 +52,9 @@ function Schedules(props) {
                   <Form inline>
                     <Col sm="6">
                       <Select
-                        required
                         onChange={selectDest}
                         name="origDest"
-                        options={schedulesData.routes}
+                        options={props.schedules.routes}
                         isSearchable={true}
                         isClearable={true}
                       />
@@ -75,8 +63,6 @@ function Schedules(props) {
                       <Input
                         type="date"
                         name="date"
-                        id="exampleDatetime"
-                        required
                         placeholder="datetime placeholder"
                         onChange={dateChange}
                       />
@@ -102,8 +88,8 @@ function Schedules(props) {
                 </tr>
               </thead>
               <tbody>
-                {schedulesData.dataSchedules &&
-                  schedulesData.dataSchedules.map((data, index) => (
+                {props.schedules.dataSchedules &&
+                  props.schedules.dataSchedules.map((data, index) => (
                     <tr>
                       <th scope="row">{index + 1}</th>
                       <td>{data && data.agent}</td>
@@ -111,7 +97,11 @@ function Schedules(props) {
                       <td> {data && data.price}</td>
                       <td>{data && data.date}</td>
                       <td>{data && data.time}</td>
-                      <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
+                      <td>
+                        {data &&
+                          data.seatsAvaiable &&
+                          data.seatsAvaiable.length}
+                      </td>
                       <td>{data && data.total_seat}</td>
                     </tr>
                   ))}
@@ -124,4 +114,10 @@ function Schedules(props) {
   )
 }
 
-export default Schedules
+const mapStateToProps = state => {
+  return {
+    schedules: state.schedules
+  }
+}
+const mapDispatchToProps = { getSchedules, loadRoutes }
+export default connect(mapStateToProps, mapDispatchToProps)(Schedules)

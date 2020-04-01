@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import {
   Container,
   Col,
@@ -11,10 +12,8 @@ import {
   Input
 } from 'reactstrap'
 import { converDate } from '../../utils/conver'
-
-// Redux
-import { connect } from 'react-redux'
 import { getReservations } from '../../redux/actions/ReservationsActions'
+
 function Reservations(props) {
   const [search, setSearch] = useState('')
 
@@ -27,21 +26,26 @@ function Reservations(props) {
     props.history.push({
       search: `?search[key]=fullName&search[value]=${e.currentTarget.value}`
     })
-    // reservationsData.actions.loadData(props.history.location.search)
+    props.getReservations(props.history.location.search)
   }
 
+  const headerTable = [
+    '#',
+    'ID Res',
+    'Status',
+    'Passenger Name',
+    'Boarding Time',
+    'Data',
+    'Gender',
+    'Routes'
+  ]
   const item = (
     <>
       <thead>
         <tr>
-          <th>#</th>
-          <th>ID Reservations</th>
-          <th>Status</th>
-          <th>Passenger Name</th>
-          <th>Boarding Time</th>
-          <th>Date</th>
-          <th>Gender</th>
-          <th>Routes</th>
+          {headerTable.map((data, i) => (
+            <th>{data}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
@@ -169,9 +173,8 @@ function Reservations(props) {
 }
 const mapStateToProps = state => {
   return {
-    reservations: state.data
+    reservations: state.dataReservations
   }
 }
 const mapDispatchToProps = { getReservations }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Reservations)

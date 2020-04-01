@@ -10,7 +10,7 @@ import rootReducer from './reducers'
 
 const config = {
   key: 'container',
-  stateReconciler: hardSet,
+  // stateReconciler: hardSet,
   storage
 }
 const persistedReducer = persistReducer(config, rootReducer)

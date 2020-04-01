@@ -1,5 +1,10 @@
 import axios from 'axios'
 import config from '../../utils/config'
+import {
+  GET_RESERVATIONS_DATA,
+  ERROR_RESERVATIONS,
+  SET_LOADING_RESERVATIONS
+} from './types'
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
   'token_user'
@@ -11,13 +16,13 @@ export const getReservations = query => async dispatch => {
     query = (query && `reservations/all${query}`) || 'reservations/all'
     const res = await axios.get(config.DATA_URL.concat(query))
     dispatch({
-      type: 'GET_RESERVATIONS_DATA',
+      type: GET_RESERVATIONS_DATA,
       payload: res.data.data
     })
   } catch (error) {
     console.error('Error from Reservations ACtiond', error)
     dispatch({
-      type: 'ERROR_RESERVATIONS',
+      type: ERROR_RESERVATIONS,
       payload: error.response.data
     })
   }
@@ -25,6 +30,6 @@ export const getReservations = query => async dispatch => {
 
 export const setLoading = () => {
   return {
-    type: 'SET_LOADING'
+    type: SET_LOADING_RESERVATIONS
   }
 }

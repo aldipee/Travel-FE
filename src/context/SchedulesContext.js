@@ -26,7 +26,7 @@ export default class Provider extends React.Component {
           label: `${dest.origin} (${dest.origin_code}) - ${dest.destination} (${dest.destination_code})`
         }))
         this.setState({
-          data: data.data.data,
+          // data: data.data.data,
           routes
         })
       })
