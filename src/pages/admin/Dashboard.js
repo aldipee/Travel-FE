@@ -1,42 +1,33 @@
 import React from 'react'
 
-import { Button, Container, Col, Row, Card, CardTitle, CardText } from 'reactstrap'
-import Layout from '../layout/Dashboard.layout'
+import { Container, Row, Col } from 'reactstrap'
+import CardSummary from '../../components/CardTotal'
+import DashboardChart from '../../components/DashboardChart'
 
 const DashboardContent = () => {
   return (
     <Container fluid={true}>
-      <h1 className="mt-4">Simple Sidebar</h1>
+      <h4 className="mt-3">Simple Sidebar</h4>
       <p>
-        The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens.
-        When toggled using the Button below, the menu will change.
+        The starting state of the menu will appear collapsed on smaller screens, and will appear
       </p>
-      <p>
-        Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for
-        demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.
-      </p>
+
       <Row>
-        <Col sm="4">
-          <Card body>
-            <CardTitle>Special Title Treatment</CardTitle>
-            <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-            <Button>Go somewhere</Button>
-          </Card>
+        <CardSummary
+          colSize={3}
+          title="Total Reservations"
+          total={302}
+          backgroundColor={'0061f2'}
+        />
+        <CardSummary colSize={3} title="Total Routes" total={22} backgroundColor={'f4a100'} />
+        <CardSummary colSize={3} title="Total Agents" total={9} backgroundColor={'e81500'} />
+        <CardSummary colSize={3} title="Total Agents" total={9} backgroundColor={'e81500'} />
+      </Row>
+      <Row>
+        <Col md={8} className="mt-4 mb-3">
+          <DashboardChart />
         </Col>
-        <Col sm="4">
-          <Card body>
-            <CardTitle>Special Title Treatment</CardTitle>
-            <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-            <Button>Go somewhere</Button>
-          </Card>
-        </Col>
-        <Col sm="4">
-          <Card body>
-            <CardTitle>Special Title Treatment</CardTitle>
-            <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-            <Button>Go somewhere</Button>
-          </Card>
-        </Col>
+        <Col md={4}>Some</Col>
       </Row>
     </Container>
   )

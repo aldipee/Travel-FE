@@ -10,7 +10,6 @@ import {
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText,
-  Media,
   Badge,
   Table,
   CardBody,
@@ -19,6 +18,7 @@ import {
 } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getReservationById } from '../../redux/actions/ReservationsActions'
+import { IoIosBriefcase, IoMdPaper } from 'react-icons/io'
 
 class ReservationsDetails extends Component {
   componentDidMount() {
@@ -46,83 +46,86 @@ class ReservationsDetails extends Component {
                     Reservations ID : #{data && data.id_reservation}
                   </ListGroupItemHeading>
                   <ListGroupItemText>
-                    <Media>
-                      <Media left href="#"></Media>
-                      <Media body>
-                        <Row>
-                          <Col md="12">
-                            <CardBody>
-                              <CardTitle className="text-bold">Booking Code</CardTitle>
-                              <CardSubtitle>
-                                <Badge color={data && data.check_in ? 'success' : 'warning'}>
-                                  <h5>#{data && data.booking_code}</h5>
-                                </Badge>
-                              </CardSubtitle>
-                            </CardBody>
-                            <CardBody>
-                              <CardText>
-                                <Col md="8">
-                                  <h5>Routes Informations</h5>
-                                  <Table borderless>
-                                    <thead>
-                                      <tr>
-                                        <th>Origin</th>
-                                        <th>Destination</th>
-                                        <th>Time</th>
-                                        <th>Date</th>
-                                        <th>Bus ID</th>
-                                        <th>Schedule ID</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <th>{data && data.origin}</th>
-                                        <td>{data && data.destination}</td>
-                                        <td>{data && data.time}</td>
-                                        <td>{data && data.date && converDate(data.date)}</td>
-                                        <td>{data && data.bus_id}</td>
-                                        <td>{data && data.schedule_id}</td>
-                                      </tr>
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                                <Col md="10" className="mt-5">
-                                  <h5>Passenger Informations</h5>
-                                  <Table borderless>
-                                    <thead>
-                                      <tr>
-                                        <th>Passenger Name</th>
-                                        <th>Passenger ID Number</th>
-                                        <th>Passenger ID type</th>
-                                        <th>Gender</th>
-                                        <th>Status</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>{data && data.fullName}</td>
-                                        <td>{data && data.passenger_id_number}</td>
-                                        <td>{data && data.passenger_id_type}</td>
-                                        <td>{data && data.gender}</td>
-                                        <td>
-                                          {data && data.check_in ? (
-                                            <Badge color="success">{'Completed'}</Badge>
-                                          ) : (
-                                            <Badge color="warning">{'Wait for Check-In'}</Badge>
-                                          )}
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </Table>
-                                </Col>
-                              </CardText>
-                              <CardLink href="#">Card Link</CardLink>
-                              <CardLink href="#">Another Link</CardLink>
-                            </CardBody>
-                          </Col>
-                        </Row>
-                      </Media>
-                    </Media>
+                    <Row>
+                      <Col md="12">
+                        <CardBody>
+                          <CardTitle className="text-bold">Booking Code</CardTitle>
+                          <CardSubtitle>
+                            <Badge color={data && data.check_in ? 'success' : 'warning'}>
+                              <h5 style={{ color: '#fff', fontWeight: 'bold' }}>
+                                #{data && data.booking_code}
+                              </h5>
+                            </Badge>
+                          </CardSubtitle>
+                        </CardBody>
+                        <CardBody>
+                          <CardText>
+                            <Col md="8">
+                              <Badge color="primary" style={{ padding: '3px' }}>
+                                <h5>Routes Informations</h5>
+                              </Badge>
+
+                              <Table borderless>
+                                <thead>
+                                  <tr>
+                                    <th>Origin</th>
+                                    <th>Destination</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                    <th>Bus ID</th>
+                                    <th>Schedule ID</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th>{data && data.origin}</th>
+                                    <td>{data && data.destination}</td>
+                                    <td>{data && data.time}</td>
+                                    <td>{data && data.date && converDate(data.date)}</td>
+                                    <td>{data && data.bus_id}</td>
+                                    <td>{data && data.schedule_id}</td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </Col>
+                            <Col md="10" className="mt-5">
+                              <Badge color="success" style={{ padding: '3px' }}>
+                                <h5>Passenger Informations</h5>
+                              </Badge>
+
+                              <Table borderless>
+                                <thead>
+                                  <tr>
+                                    <th>Passenger Name</th>
+                                    <th>Passenger ID Number</th>
+                                    <th>Passenger ID type</th>
+                                    <th>Gender</th>
+                                    <th>Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>{data && data.fullName}</td>
+                                    <td>{data && data.passenger_id_number}</td>
+                                    <td>{data && data.passenger_id_type}</td>
+                                    <td>{data && data.gender}</td>
+                                    <td>
+                                      {data && data.check_in ? (
+                                        <Badge color="success">{'Completed'}</Badge>
+                                      ) : (
+                                        <Badge color="warning">{'Wait for Check-In'}</Badge>
+                                      )}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </Col>
+                          </CardText>
+                          <CardLink href="#">Card Link</CardLink>
+                          <CardLink href="#">Another Link</CardLink>
+                        </CardBody>
+                      </Col>
+                    </Row>
                   </ListGroupItemText>
                 </ListGroupItem>
               </Card>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ListGroup, ListGroupItem } from 'reactstrap'
+import { ListGroup, ListGroupItem as BSListGroupItem } from 'reactstrap'
 import Style from 'styled-components'
 import Icon from '@mdi/react'
 import {
@@ -16,6 +16,29 @@ import {
 const MenuText = Style('span')`
 color : #8d9498;
 text-decoration : none;
+font-weight : bold;
+margin : 20px;
+&:hover {
+  text-decoration : none;
+}`
+const ListGroupItem = Style(BSListGroupItem)`
+  margin : 5px 0px;
+  border : none;
+  border-left: 6px solid #fff !important;
+  &:hover {
+    border-left: 6px solid #5b8efc !important;
+    cursor : pointer;
+  }
+ 
+`
+const SidebarBody = Style('div')`
+  background-color : #fff;
+  & .item-link:hover {
+    text-decoration : none;
+  }
+  & .icon:hover {
+    color : #5b8efc !important;
+  }
 `
 
 function SidebarMenu(props) {
@@ -61,30 +84,30 @@ function SidebarMenu(props) {
   ]
 
   return (
-    <div>
+    <SidebarBody>
       <ListGroup flush className="mt-5">
         {MenuItem &&
           props.isSuperAdmin &&
           MenuItem.concat(AdminMenu).map((data, index) => (
-            <ListGroupItem>
-              <Link to={data.path}>
-                <Icon path={data.icon} size={1} color="#8d9498" />
+            <Link className="item-link" to={data.path}>
+              <ListGroupItem>
+                <Icon className="icon" path={data.icon} size={1} color="#8d9498" />
                 <MenuText>{data.text}</MenuText>
-              </Link>
-            </ListGroupItem>
+              </ListGroupItem>
+            </Link>
           ))}
         {MenuItem &&
           !props.isSuperAdmin &&
           MenuItem.map((data, index) => (
-            <ListGroupItem>
-              <Link to={data.path}>
+            <Link className="item-link" to={data.path}>
+              <ListGroupItem>
                 <Icon path={data.icon} size={1} color="#8d9498" />
                 <MenuText>{data.text}</MenuText>
-              </Link>
-            </ListGroupItem>
+              </ListGroupItem>
+            </Link>
           ))}
       </ListGroup>
-    </div>
+    </SidebarBody>
   )
 }
 

@@ -18,7 +18,8 @@ import {
 } from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
-
+import { connect } from 'react-redux'
+import { getAllRoutes, addRoutes } from '../../redux/actions/RoutesActions'
 import { RoutesContext } from '../../context/RouteContext'
 import InsertModal from '../../components/ModalRoutes'
 
@@ -33,15 +34,19 @@ function Routes(props) {
       data.limit
     }`
     props.history.push({ search: query })
-    routesData.loadData(props.history.location.search)
+    props.getAllRoutes(props.history.location.search)
+  }
+  const addNewData = e => {
+    props.addRoutes(e)
+    setShowModal(false)
   }
   useEffect(() => {
-    routesData.loadData()
+    props.getAllRoutes()
   }, [])
+  const { data, pageInfo } = props
   return (
     <>
-      <InsertModal showModal={showModal} openModal={openModal} />
-
+      <InsertModal showModal={showModal} openModal={openModal} addNewData={addNewData} />
       <Container fluid={true}>
         <Row>
           <Col sm="6" className="my-3">
@@ -94,8 +99,8 @@ function Routes(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {routesData.data &&
-                    routesData.data.map((data, index) => (
+                  {data &&
+                    data.map((data, index) => (
                       <tr>
                         <th scope="row">{routesData.startPageFrom + index}</th>
                         <td>
@@ -137,7 +142,7 @@ function Routes(props) {
               <Row>
                 <Col md={6} className="text-center">
                   <Button
-                    disabled={routesData.pageInfo.prevLink ? false : true}
+                    disabled={pageInfo && pageInfo.prevLink ? false : true}
                     onClick={routesData.prevData}
                     color="primary">
                     Prev
@@ -145,7 +150,7 @@ function Routes(props) {
                 </Col>
                 <Col md={6} className="text-center">
                   <Button
-                    disabled={routesData.pageInfo.nextLink ? false : true}
+                    disabled={pageInfo && pageInfo.nextLink ? false : true}
                     onClick={routesData.nextData}
                     color="primary">
                     Next
@@ -160,4 +165,16 @@ function Routes(props) {
   )
 }
 
-export default Routes
+const mapStateToProps = state => ({
+  data: state.routesData.data,
+  pageInfo: state.routesData.pageInfo,
+  isLoading: state.routesData.isLoading,
+  showModal: state.routesData.showModal
+})
+
+const mapDispatchToProps = {
+  getAllRoutes,
+  addRoutes
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Routes)

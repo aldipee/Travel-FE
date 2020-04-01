@@ -11,7 +11,6 @@ export default class Provider extends React.Component {
   state = {
     data: [],
     isLoading: false,
-
     formData: {},
     pageInfo: {},
     currentPage: 1,
@@ -42,13 +41,21 @@ export default class Provider extends React.Component {
     const results = await axios.get(this.state.pageInfo.nextLink)
     const { data } = results.data
     const { pageInfo } = results.data
-    this.setState({ data: data, pageInfo, startPageFrom: this.state.startPageFrom + pageInfo.limit })
+    this.setState({
+      data: data,
+      pageInfo,
+      startPageFrom: this.state.startPageFrom + pageInfo.limit
+    })
   }
   prevData = async () => {
     const results = await axios.get(this.state.pageInfo.prevLink)
     const { data } = results.data
     const { pageInfo } = results.data
-    this.setState({ data: data, pageInfo, startPageFrom: this.state.startPageFrom - pageInfo.limit })
+    this.setState({
+      data: data,
+      pageInfo,
+      startPageFrom: this.state.startPageFrom - pageInfo.limit
+    })
   }
 
   addData = e => {

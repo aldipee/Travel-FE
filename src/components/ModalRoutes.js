@@ -1,25 +1,26 @@
 import React, { Component } from 'react'
-import { Modal, ModalBody, ModalHeader, ModalFooter, Form, FormGroup, Label, Input, Row, Col, Button } from 'reactstrap'
-import { RoutesContext } from '../context/RouteContext'
-export default class ModalRoutes extends Component {
-  static contextType = RoutesContext
-  state = {
-    showModal: false
-  }
+import {
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Row,
+  Col,
+  Button
+} from 'reactstrap'
 
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      showModal: newProps.showModal
-    })
-  }
-
+class ModalRoutes extends Component {
   render() {
     return (
       <div>
-        <Modal isOpen={this.state.showModal} toggle={() => this.props.openModal()}>
+        <Modal isOpen={this.props.showModal} toggle={() => this.props.openModal()}>
           <ModalHeader toggle={() => this.props.openModal()}>Add new route</ModalHeader>
           <ModalBody>
-            <Form onSubmit={this.context.addData}>
+            <Form onSubmit={this.props.addNewData}>
               <Row>
                 <Col sm="6">
                   <FormGroup>
@@ -30,7 +31,12 @@ export default class ModalRoutes extends Component {
                 <Col sm="6">
                   <FormGroup>
                     <Label>Destination Identifier Code</Label>
-                    <Input type="text" maxLength={3} name="destinationCode" placeholder="Ex : JKT" />
+                    <Input
+                      type="text"
+                      maxLength={3}
+                      name="destinationCode"
+                      placeholder="Ex : JKT"
+                    />
                   </FormGroup>
                 </Col>
                 <Col sm="6">
@@ -54,7 +60,7 @@ export default class ModalRoutes extends Component {
               </Row>
               <ModalFooter>
                 <Button color="success">Add Data</Button>
-                <Button color="warning" onClick={this.context.openModal}>
+                <Button color="warning" onClick={this.props.openModal}>
                   Cancel
                 </Button>
               </ModalFooter>
@@ -65,3 +71,4 @@ export default class ModalRoutes extends Component {
     )
   }
 }
+export default ModalRoutes

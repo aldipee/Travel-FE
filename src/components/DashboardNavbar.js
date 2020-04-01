@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import {
-  Nav,
+  Nav as BSNav,
   Navbar,
   NavbarToggler,
   Collapse,
@@ -12,12 +13,16 @@ import {
   Button
 } from 'reactstrap'
 
+const Nav = styled(BSNav)`
+  background-color: #fff !important;
+  box-shadow: 4px 3px 5px rgba(66, 66, 66, 0.1);
+`
+
 const DashboardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
   return (
-    <Nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-      <Button color="primary">Toggle Menu</Button>
+    <Nav className="navbar navbar-expand-lg  ">
       <Navbar color="light" light expand="md" className="ml-auto  mt-2 mt-lg-0">
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
