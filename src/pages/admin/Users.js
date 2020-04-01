@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import FormSerialize from 'form-serialize'
-
+import { connect } from 'react-redux'
 import {
   Button,
   Container,
@@ -9,34 +9,26 @@ import {
   Row,
   Card,
   CardTitle,
-  CardText,
   Table,
   FormGroup,
   Form,
   Input
 } from 'reactstrap'
-
-import { UsersContext } from '../../context/UsersContext'
-import TableLoading from '../../components/TableLoading'
+import { getAllUsers } from '../../redux/actions/UsersActions'
 import { converDate } from '../../utils/conver'
 
 function Users(props) {
-  const userData = useContext(UsersContext)
   const submitSearch = e => {
     e.preventDefault()
     const data = FormSerialize(e.target, { hash: true })
-    console.log(data)
     props.history.push({
-      search: `?search[key]=${data.searchBy}&search[value]=${
-        data.value ? data.value : ''
-      }`
+      search: `?search[key]=${data.searchBy}&search[value]=${data.value ? data.value : ''}`
     })
-    userData.actions.searchData(props.history.location.search)
+    props.getAllUsers(props.history.location.search)
   }
   useEffect(() => {
-    userData.actions.searchData()
+    props.getAllUsers()
   }, [])
-
   const item = (
     <>
       <thead>
@@ -52,8 +44,8 @@ function Users(props) {
         </tr>
       </thead>
       <tbody>
-        {userData.data &&
-          userData.data.map((data, index) => (
+        {props.users &&
+          props.users.map((data, index) => (
             <tr>
               <th scope="row">{index + 1}</th>
               <td>
@@ -152,11 +144,7 @@ function Users(props) {
                 <Row>
                   <Form inline onSubmit={submitSearch}>
                     <FormGroup className="mr-4">
-                      <Input
-                        type="text"
-                        name="value"
-                        placeholder="Search by name.."
-                      />
+                      <Input type="text" name="value" placeholder="Search by name.." />
                     </FormGroup>
 
                     <FormGroup className="mr-4">
@@ -179,7 +167,7 @@ function Users(props) {
                   </Form>
                 </Row>
               </CardTitle>
-              <Table>{userData.isLoading ? placeholder : item}</Table>
+              <Table>{props.isLoading ? placeholder : item}</Table>
             </Card>
           </Col>
         </Row>
@@ -187,5 +175,11 @@ function Users(props) {
     </>
   )
 }
+const mapStateToProps = state => {
+  return {
+    users: state.usersData.data,
+    isLoading: state.usersData.isLoading
+  }
+}
 
-export default Users
+export default connect(mapStateToProps, { getAllUsers })(Users)

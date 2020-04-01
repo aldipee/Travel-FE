@@ -1,12 +1,9 @@
 import React from 'react'
 import axios from 'axios'
 import config from '../utils/config'
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 export const UsersContext = React.createContext()
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-  'token_user'
-)}`
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
 export default class Provider extends React.Component {
   state = {
     data: [],
@@ -17,7 +14,7 @@ export default class Provider extends React.Component {
     this.setState({
       isLoading: true
     })
-    query = (query && `users/${query}&lime=5`) || 'users?limit=5'
+    query = (query && `users/${query}&limit=5`) || 'users?limit=5'
     axios
       .get(config.DATA_URL.concat(query))
       .then(data => {
