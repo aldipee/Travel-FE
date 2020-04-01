@@ -1,18 +1,13 @@
 import React, { useContext, useEffect } from 'react'
 
-//Context
-import { AgentContext } from '../../context/AgentContext'
-
 import { Container, Col, Row, Card, CardTitle, CardText, Table, Spinner } from 'reactstrap'
-import ComponentLoading from '../../components/ComponentLoading'
-
-function Agents() {
+//Redux
+import { connect } from 'react-redux'
+import { getAgents } from '../../redux/actions/AgentsActions'
+function Agents(props) {
   useEffect(() => {
-    data.actions.loadData()
+    props.getAgents()
   }, [])
-
-  const data = useContext(AgentContext)
-  console.log(data)
 
   const item = (
     <>
@@ -27,8 +22,8 @@ function Agents() {
         </tr>
       </thead>
       <tbody>
-        {data.data.length &&
-          data.data.map((data, index) => (
+        {props.data &&
+          props.data.map((data, index) => (
             <tr>
               <th scope="row">{data && index + 1}</th>
               <td>{data && data.agent_id}</td>
@@ -108,7 +103,7 @@ function Agents() {
         <Col sm="12">
           <Card body>
             <CardTitle>Special Title Treatment</CardTitle>
-            <Table borderless>{data.isLoading ? placeholder : item}</Table>
+            <Table borderless>{props.isLoading ? placeholder : item}</Table>
           </Card>
         </Col>
       </Row>
@@ -116,4 +111,11 @@ function Agents() {
   )
 }
 
-export default Agents
+const mapStateToProps = state => {
+  return {
+    data: state.agentsData.data,
+    isLoading: state.agentsData.isLoading
+  }
+}
+
+export default connect(mapStateToProps, { getAgents })(Agents)

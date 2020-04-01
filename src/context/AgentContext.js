@@ -13,7 +13,7 @@ export default class Provider extends React.Component {
   loadData = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     axios.get(config.DATA_URL.concat('agents')).then(data => {
-      console.table(data.data.data)
+      // console.table(data.data.data)
       this.setState({
         data: data.data.data,
         isLoading: false

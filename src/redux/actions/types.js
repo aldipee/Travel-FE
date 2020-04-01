@@ -13,3 +13,7 @@ export const GET_USER_BY_ID = 'GET_USER_BY_ID'
 export const GET_ALL_USERS = 'GET_ALL_USERS'
 export const SET_LOADING_USERS = 'SET_LOADING_USERS'
 export const ERROR_USERS = 'ERROR_USERS'
+// Agents
+export const GET_ALL_AGENTS = 'GET_ALL_AGENTS'
+export const SET_LOADING_AGENTS = 'SET_LOADING_AGENTS'
+export const ERORR_AGENTS = 'ERROR_AGENTS'
