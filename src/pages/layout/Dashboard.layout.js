@@ -23,12 +23,15 @@ const Content = Style(Container)`
   background : #fcfcfc;
 
 `
+const Logo = Style('img')`
+
+`
 const DashboardLayout = props => {
   return (
     <div>
       <DashboardWrapper className="d-flex">
         <SidebarWrapper className="bg-light border-right" id="sidebar-wrapper">
-          <SidebarHeading>Logo Here</SidebarHeading>
+          <SidebarHeading>LOGO HERE</SidebarHeading>
           <SidebarMenu isSuperAdmin={props.isAdmin} />
         </SidebarWrapper>
         <Content fluid={true} style={{ padding: 0 }}>

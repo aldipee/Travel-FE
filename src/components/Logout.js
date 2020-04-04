@@ -7,13 +7,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   localStorage.removeItem('token_user')
   localStorage.removeItem('role')
   Auth.Logout()
+  window.location.reload()
   return (
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /signin page
-    <Route
-      {...rest}
-      render={props => <Redirect to={{ pathname: '/auth/login' }} />}
-    />
+    <Route {...rest} render={props => <Redirect to={{ pathname: '/auth/login' }} />} />
   )
 }
 export default PrivateRoute

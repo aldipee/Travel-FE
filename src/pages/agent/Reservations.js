@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Container, Col, Row, Card, CardTitle, Table, FormGroup, Input } from 'reactstrap'
 import { converDate } from '../../utils/conver'
-import { getReservations } from '../../redux/actions/ReservationsActions'
+import { getReservations, getAllPassengers } from '../../redux/actions/ReservationsActions'
 
 function Reservations(props) {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    props.getReservations()
+    props.getAllPassengers()
   }, [])
 
   const searchData = e => {
@@ -17,7 +17,7 @@ function Reservations(props) {
     props.history.push({
       search: `?search[key]=fullName&search[value]=${e.currentTarget.value}`
     })
-    props.getReservations(props.history.location.search)
+    props.getAllPassengers(props.history.location.search)
   }
 
   const headerTable = [
@@ -163,5 +163,5 @@ const mapStateToProps = state => {
     reservations: state.dataReservations
   }
 }
-const mapDispatchToProps = { getReservations }
+const mapDispatchToProps = { getReservations, getAllPassengers }
 export default connect(mapStateToProps, mapDispatchToProps)(Reservations)

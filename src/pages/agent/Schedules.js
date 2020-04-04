@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 import {
@@ -10,12 +12,31 @@ import {
   Table,
   Input,
   Form,
-  ListGroup
+  ListGroup,
+  ListGroupItem as Item,
+  ListGroupItemHeading,
+  ListGroupItemText
 } from 'reactstrap'
 import { connect } from 'react-redux'
-import { getSchedules, loadRoutes } from '../../redux/actions/SchedulesActions'
+import {
+  getSchedules,
+  loadRoutes,
+  getSchedulesForAgent
+} from '../../redux/actions/SchedulesActions'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import { IoIosAirplane } from 'react-icons/io'
 
-import ScheduleList from '../../components/SchedulesItem'
+const ListGroupItem = styled(Item)`
+  margin: 10px 0px 8px 0px;
+  border: 1px solid #7f7f7f !important;
+  border-radius: 0 !important;
+`
+const PriceTag = styled('div')`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #a0eb49;
+`
 
 function Schedules(props) {
   const [date, setDate] = useState(new Date())
@@ -33,7 +54,7 @@ function Schedules(props) {
     props.history.push({
       search: `?origin=${selectedRoute.origin}&destination=${selectedRoute.destination}&date=${date}`
     })
-    props.getSchedules(props.history.location.search)
+    props.getSchedulesForAgent(props.history.location.search)
   }
   useEffect(() => {
     props.loadRoutes()
@@ -41,14 +62,56 @@ function Schedules(props) {
 
   const newTable = (
     <ListGroup>
-      {props.schedules.dataSchedules &&
-        props.schedules.dataSchedules.map(data => (
-          <ScheduleList
-            totalSeats={data && data.seatsAvaiable && data.seatsAvaiable.length}
-            name={data && data.bus_name}
-            price={data && data.price}
-          />
-        ))}
+      <ListGroupItem>
+        <Row>
+          <Col md={2}>
+            <ListGroupItemHeading>
+              <img
+                alt="logo"
+                className="img-fluid img-responsive"
+                src="https://cdn.freebiesupply.com/logos/large/2x/fly-emirates-logo-png-transparent.png"
+              />
+              <span>Barito Nusantara</span>
+            </ListGroupItemHeading>
+          </Col>
+          <Col md={8}>
+            <ListGroupItemText>
+              Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+              blandit.
+              <div class="steps-timeline">
+                <div class="steps-one">
+                  <IoIosAirplane size={60} className="steps-img" />
+                  <p class="steps-description">08:00 AM</p>
+                </div>
+                <div class="steps-two">
+                  <IoIosAirplane size={60} className="steps-img" />
+                  <p class="steps-description">08:00 AM</p>
+                </div>
+                <div class="steps-three">
+                  <IoIosAirplane size={60} color="#3498DB" className="steps-img" />
+                </div>
+              </div>
+            </ListGroupItemText>
+          </Col>
+          <Col md={2}>
+            <PriceTag>Rp. 300.000</PriceTag>
+          </Col>
+        </Row>
+      </ListGroupItem>
+      <ListGroupItem>
+        <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
+        <ListGroupItemText>
+          Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+          blandit.
+        </ListGroupItemText>
+      </ListGroupItem>
+      <ListGroupItem>
+        <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
+        <ListGroupItemText>
+          Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+          blandit.
+        </ListGroupItemText>
+      </ListGroupItem>
     </ListGroup>
   )
 
@@ -57,13 +120,13 @@ function Schedules(props) {
       <thead>
         <tr>
           <th>#</th>
-          <th>Agent</th>
           <th>Bus Name</th>
           <th>Price</th>
           <th>Date</th>
           <th>Time</th>
           <th>Seats avaiable</th>
           <th>Bus Capacity</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -71,13 +134,18 @@ function Schedules(props) {
           props.schedules.dataSchedules.map((data, index) => (
             <tr>
               <th scope="row">{index + 1}</th>
-              <td>{data && data.agent}</td>
+
               <td>{data && data.bus_name}</td>
               <td> {data && data.price}</td>
               <td>{data && data.date}</td>
               <td>{data && data.time}</td>
               <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
               <td>{data && data.total_seat}</td>
+              <td>
+                <Link to={`/schedules/edit/${data.id}`}>
+                  <Button>Edit</Button>
+                </Link>
+              </td>
             </tr>
           ))}
       </tbody>
@@ -90,6 +158,14 @@ function Schedules(props) {
         <Col sm="12" className="mt-3">
           <Card body>
             <CardTitle>
+              <Row>
+                <Col sm="10"></Col>
+                <Col sm="2">
+                  <Link to="/schedules/add">
+                    <Button>Add Schedules</Button>
+                  </Link>
+                </Col>
+              </Row>
               <Row>
                 <Col sm="6">All Routes</Col>
                 <Col sm="6" className="text-right"></Col>
@@ -126,7 +202,7 @@ function Schedules(props) {
       </Row>
       <Row className="mx-2 my-2">
         <Col md={12}>
-          <Card body>{newTable}</Card>
+          <Card body>{items}</Card>
         </Col>
       </Row>
     </Container>
@@ -138,5 +214,5 @@ const mapStateToProps = state => {
     schedules: state.schedules
   }
 }
-const mapDispatchToProps = { getSchedules, loadRoutes }
+const mapDispatchToProps = { getSchedules, loadRoutes, getSchedulesForAgent }
 export default connect(mapStateToProps, mapDispatchToProps)(Schedules)

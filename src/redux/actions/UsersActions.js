@@ -25,7 +25,7 @@ export const getUserById = id => async dispatch => {
 export const getAllUsers = query => async dispatch => {
   try {
     setLoading()
-    query = (query && `users/${query}&limit=5`) || 'users?limit=5'
+    query = (query && `users/${query}`) || 'users?limit=5'
     const res = await axios.get(config.DATA_URL.concat(query))
     dispatch({
       type: GET_ALL_USERS,

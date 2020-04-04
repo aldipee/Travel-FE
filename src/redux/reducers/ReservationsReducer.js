@@ -2,7 +2,8 @@ import {
   SET_LOADING_RESERVATIONS,
   GET_RESERVATIONS_DATA,
   ERROR_RESERVATIONS,
-  GET_RESERVATIONS_BY_ID
+  GET_RESERVATIONS_BY_ID,
+  GET_ALL_PASSENGERS
 } from '../actions/types'
 const initialState = {
   data: [],
@@ -13,6 +14,13 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_ALL_PASSENGERS: {
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload
+      }
+    }
     case SET_LOADING_RESERVATIONS: {
       return {
         ...state,

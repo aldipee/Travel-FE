@@ -1,12 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-import formSerialize from 'form-serialize'
 
 import config from '../utils/config'
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-  'token_user'
-)}`
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
 export const SchedulesContext = React.createContext()
 
 export default class Provider extends React.Component {

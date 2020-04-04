@@ -21,8 +21,9 @@ function Users(props) {
   const submitSearch = e => {
     e.preventDefault()
     const data = FormSerialize(e.target, { hash: true })
+    console.log(data)
     props.history.push({
-      search: `?search[key]=${data.searchBy}&search[value]=${data.value ? data.value : ''}`
+      search: `?search[key]=${data.searchBy}&search[value]=${data.value ? data.value : ''}&limit=${data.limit}`
     })
     props.getAllUsers(props.history.location.search)
   }
@@ -39,8 +40,7 @@ function Users(props) {
           <th>Full Name</th>
           <th>Gender</th>
           <th>Date of Birth</th>
-          <th>Balance</th>
-          <th>Phone Number</th>
+
         </tr>
       </thead>
       <tbody>
@@ -57,8 +57,7 @@ function Users(props) {
               <td> {data && data.fullName}</td>
               <td>{data && data.gender}</td>
               <td>{data && data.bod && converDate(data.bod)}</td>
-              <td>{data && data.balance}</td>
-              <td>{data && data.phoneNumber}</td>
+
             </tr>
           ))}
       </tbody>
@@ -88,12 +87,7 @@ function Users(props) {
           <th width="15%">
             <div className="placeholder"></div>
           </th>
-          <th width="10%">
-            <div className="placeholder"></div>
-          </th>
-          <th>
-            <div className="placeholder"></div>
-          </th>
+
         </tr>
       </thead>
       <tbody>
@@ -118,12 +112,7 @@ function Users(props) {
               <td>
                 <div className="placeholder"></div>
               </td>
-              <td>
-                <div className="placeholder"></div>
-              </td>
-              <td>
-                <div className="placeholder"></div>
-              </td>
+
             </tr>
           ))}
       </tbody>

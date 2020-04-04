@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import formSerizalize from 'form-serialize'
@@ -18,10 +20,13 @@ import {
 } from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
+import { IoIosSearch } from 'react-icons/io'
 import { connect } from 'react-redux'
 import { getAllRoutes, addRoutes } from '../../redux/actions/RoutesActions'
 import { RoutesContext } from '../../context/RouteContext'
 import InsertModal from '../../components/ModalRoutes'
+
+import Pagination from '../../components/Pagination'
 
 function Routes(props) {
   const routesData = useContext(RoutesContext)
@@ -43,7 +48,23 @@ function Routes(props) {
   useEffect(() => {
     props.getAllRoutes()
   }, [])
+
+  const movePage = page => {
+    const query = `${
+      props.history.location.search
+        ? `${props.history.location.search}&page=${page}`
+        : `?page=${page}`
+    } `
+    console.log(query)
+    props.getAllRoutes(query)
+  }
+
+  const onPageChanged = data => {
+    const { currentPage, totalPages, pageLimit } = data
+    movePage(currentPage)
+  }
   const { data, pageInfo } = props
+  console.log(pageInfo)
   return (
     <>
       <InsertModal showModal={showModal} openModal={openModal} addNewData={addNewData} />
@@ -61,31 +82,69 @@ function Routes(props) {
             <Card body>
               <CardTitle>
                 <Row>
-                  <Col sm="6">All Routes</Col>
+                  <Col sm={2}>
+                    <h4 className="border-gray border-right" style={{ fontSize: '20px' }}>
+                      <strong className="text-secondary" style={{ fontSize: '19px' }}>
+                        {props.pageInfo && props.pageInfo.totalData}
+                      </strong>{' '}
+                      Routes
+                    </h4>
+                  </Col>
+                  <Col sm={2}>
+                    {props.pageInfo && props.pageInfo.page && (
+                      <span
+                        className="current-page d-inline-block h-100 pl-4 text-secondary"
+                        style={{ fontSize: '16px' }}>
+                        Page{' '}
+                        <span style={{ fontSize: '16px' }} className="font-weight-bold">
+                          {props.pageInfo.page}
+                        </span>{' '}
+                        /{' '}
+                        <span style={{ fontSize: '17px' }} className="font-weight-bold">
+                          {props.pageInfo.totalPage}
+                        </span>
+                      </span>
+                    )}
+                  </Col>
+
                   <Col sm="6" className="text-right">
                     <Button onClick={openModal}>Add Routes</Button>
                   </Col>
                 </Row>
                 <Row className="mt-3 mb-1">
-                  <Col sm="12">
-                    <Form inline onSubmit={search}>
+                  <Form inline onSubmit={search}>
+                    <Col sm={4}>
                       <FormGroup className="mr-4">
                         <Input type="text" name="searchValue" placeholder="Search by name.." />
                       </FormGroup>
-                      <Col>
-                        <FormGroup className="mr-4">
-                          <Input type="select" name="limit">
-                            <option value="5">Show 5 data</option>
-                            <option value="10">Show 10 data</option>
-                            <option value="20">Show 20 data</option>
-                          </Input>
-                        </FormGroup>
-                      </Col>
-                      <Button>Go!</Button>
-                    </Form>
+                    </Col>
+                    <Col sm={4} className="ml-4">
+                      <FormGroup className="mr-4">
+                        <Input type="select" name="limit">
+                          <option value="5">Show 5 data</option>
+                          <option value="10">Show 10 data</option>
+                          <option value="20">Show 20 data</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col sm={2}>
+                      <Button>
+                        <IoIosSearch size={30} />
+                        Go!
+                      </Button>
+                    </Col>
+                  </Form>
+
+                  <Col>
+                    {/* <Paginations
+                      currentPage={pageInfo && pageInfo.page}
+                      totalPages={pageInfo && pageInfo.totalPage}
+                      movePage={movePage}
+                    /> */}
                   </Col>
                 </Row>
               </CardTitle>
+
               <Table>
                 <thead>
                   <tr>
@@ -141,20 +200,16 @@ function Routes(props) {
               </Table>
               <Row>
                 <Col md={6} className="text-center">
-                  <Button
-                    disabled={pageInfo && pageInfo.prevLink ? false : true}
-                    onClick={routesData.prevData}
-                    color="primary">
-                    Prev
-                  </Button>
-                </Col>
-                <Col md={6} className="text-center">
-                  <Button
-                    disabled={pageInfo && pageInfo.nextLink ? false : true}
-                    onClick={routesData.nextData}
-                    color="primary">
-                    Next
-                  </Button>
+                  {pageInfo && pageInfo.totalPage && (
+                    <div className="d-flex flex-row py-4 align-items-center">
+                      <Pagination
+                        totalRecords={pageInfo && pageInfo.totalData}
+                        pageLimit={pageInfo && pageInfo.limit}
+                        pageNeighbours={0}
+                        onPageChanged={onPageChanged}
+                      />
+                    </div>
+                  )}
                 </Col>
               </Row>
             </Card>
