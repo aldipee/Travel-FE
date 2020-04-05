@@ -1,16 +1,29 @@
-import { GET_ALL_AGENTS, ERORR_AGENTS, SET_LOADING_AGENTS } from '../actions/types'
+import {
+  GET_ALL_AGENTS,
+  ERORR_AGENTS,
+  SET_LOADING_AGENTS,
+  GET_AGENT_PROFILE
+} from '../actions/types'
 const initialState = {
   data: [],
   isLoading: false,
+  singleData: {},
   error: null
 }
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LOADING_AGENTS: {
       return {
         ...state,
         isLoading: true
+      }
+    }
+    case GET_AGENT_PROFILE: {
+      return {
+        ...state,
+        isLoading: false,
+        singleData: action.payload
       }
     }
     case GET_ALL_AGENTS: {

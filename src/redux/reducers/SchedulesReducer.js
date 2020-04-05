@@ -14,13 +14,14 @@ const initialState = {
   data: [],
   routes: [],
   dataSchedules: [],
+  pageInfo: {},
   isLoading: false,
   error: null,
   isRequestSucceed: false,
   singleData: {}
 }
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case LOAD_ROUTES: {
       return {
@@ -65,7 +66,8 @@ export default function(state = initialState, action) {
     case GET_SCHEDULES: {
       return {
         ...state,
-        dataSchedules: action.payload,
+        dataSchedules: action.payload.data,
+        pageInfo: action.payload.pageInfo,
         isLoading: false
       }
     }

@@ -14,14 +14,14 @@ import {
 } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getSchedules, loadRoutes } from '../../redux/actions/SchedulesActions'
-
+import Pagination from '../../components/Pagination'
 import ScheduleList from '../../components/SchedulesItem'
 
 function Schedules(props) {
   const [date, setDate] = useState(new Date())
   const [selectedRoute, setSelectedRoute] = useState('')
-  const dateChange = e => setDate(e.currentTarget.value)
-  const selectDest = e => {
+  const dateChange = (e) => setDate(e.currentTarget.value)
+  const selectDest = (e) => {
     const value = e.value.split(/\s*\-\s*/g)
     const data = {
       origin: value[0],
@@ -35,6 +35,17 @@ function Schedules(props) {
     })
     props.getSchedules(props.history.location.search)
   }
+  const onPageChanged = (data) => {
+    const { currentPage, totalPages, pageLimit } = data
+    const query = `${
+      props.history.location.search
+        ? `${props.history.location.search}&page=${currentPage}`
+        : `?page=${currentPage}`
+    } `
+    console.log(query)
+    props.getSchedules(query)
+  }
+
   useEffect(() => {
     props.loadRoutes()
   }, [])
@@ -42,47 +53,49 @@ function Schedules(props) {
   const newTable = (
     <ListGroup>
       {props.schedules.dataSchedules &&
-        props.schedules.dataSchedules.map(data => (
+        props.schedules.dataSchedules.map((data) => (
           <ScheduleList
             totalSeats={data && data.seatsAvaiable && data.seatsAvaiable.length}
             name={data && data.bus_name}
             price={data && data.price}
+            time={data && data.time}
+            agent={data && data.agent}
           />
         ))}
     </ListGroup>
   )
 
-  const items = (
-    <Table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Agent</th>
-          <th>Bus Name</th>
-          <th>Price</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Seats avaiable</th>
-          <th>Bus Capacity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.schedules.dataSchedules &&
-          props.schedules.dataSchedules.map((data, index) => (
-            <tr>
-              <th scope="row">{index + 1}</th>
-              <td>{data && data.agent}</td>
-              <td>{data && data.bus_name}</td>
-              <td> {data && data.price}</td>
-              <td>{data && data.date}</td>
-              <td>{data && data.time}</td>
-              <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
-              <td>{data && data.total_seat}</td>
-            </tr>
-          ))}
-      </tbody>
-    </Table>
-  )
+  // const items = (
+  //   <Table>
+  //     <thead>
+  //       <tr>
+  //         <th>#</th>
+  //         <th>Agent</th>
+  //         <th>Bus Name</th>
+  //         <th>Price</th>
+  //         <th>Date</th>
+  //         <th>Time</th>
+  //         <th>Seats avaiable</th>
+  //         <th>Bus Capacity</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       {props.schedules.dataSchedules &&
+  //         props.schedules.dataSchedules.map((data, index) => (
+  //           <tr>
+  //             <th scope="row">{index + 1}</th>
+  //             <td>{data && data.agent}</td>
+  //             <td>{data && data.bus_name}</td>
+  //             <td> {data && data.price}</td>
+  //             <td>{data && data.date}</td>
+  //             <td>{data && data.time}</td>
+  //             <td>{data && data.seatsAvaiable && data.seatsAvaiable.length}</td>
+  //             <td>{data && data.total_seat}</td>
+  //           </tr>
+  //         ))}
+  //     </tbody>
+  //   </Table>
+  // )
 
   return (
     <Container fluid={true}>
@@ -126,6 +139,22 @@ function Schedules(props) {
       </Row>
       <Row className="mx-2 my-2">
         <Col md={12}>
+          <CardTitle>
+            <Row>
+              <Col sm={6}></Col>
+              <Col sm={2}>
+                Paginatnion Here
+                {props.pageInfo && (
+                  <Pagination
+                    totalRecords={props.pageInfo && props.pageInfo.totalData}
+                    pageLimit={props.pageInfo && props.pageInfo.limit}
+                    pageNeighbours={0}
+                    onPageChanged={onPageChanged}
+                  />
+                )}
+              </Col>
+            </Row>
+          </CardTitle>
           <Card body>{newTable}</Card>
         </Col>
       </Row>
@@ -133,9 +162,10 @@ function Schedules(props) {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    schedules: state.schedules
+    schedules: state.schedules,
+    pageInfo: state.schedules.pageInfo
   }
 }
 const mapDispatchToProps = { getSchedules, loadRoutes }

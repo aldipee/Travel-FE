@@ -12,6 +12,7 @@ import AddSchedules from '../pages/agent/AddSchedules'
 import EditSchedules from '../pages/agent/EditSchedules'
 import Reservations from '../pages/agent/Reservations'
 import ReservationDetails from '../pages/admin/ReservationsDetail'
+import Profile from '../pages/agent/Profile'
 //
 import Layout from '../pages/layout/Dashboard.layout'
 import Logout from '../components/Logout'
@@ -22,6 +23,7 @@ const Travel = props => {
       <Layout isAdmin={false}>
         <Switch>
           <PrivateRoute component={Dashboard} path="/" exact />
+          <PrivateRoute component={Profile} path="/profile" exact />
           <PrivateRoute component={Reservations} path="/reservations" exact />
           <PrivateRoute component={ReservationDetails} path="/reservations/details/:id" exact />
           <PrivateRoute component={Reservations} path="/reservations" exact />

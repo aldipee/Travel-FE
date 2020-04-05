@@ -24,6 +24,7 @@ export const ERROR_USERS = 'ERROR_USERS'
 export const GET_ALL_AGENTS = 'GET_ALL_AGENTS'
 export const SET_LOADING_AGENTS = 'SET_LOADING_AGENTS'
 export const ERORR_AGENTS = 'ERROR_AGENTS'
+export const GET_AGENT_PROFILE = 'GET_AGENT_PROFILE'
 // Routes
 export const GET_ALL_ROUTES = 'GET_ALL_ROUTES'
 export const ADD_NEW_ROUTES = 'ADD_NEW_ROUTE'

@@ -15,14 +15,24 @@ import {
 // Set Token
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
 
-export const getSchedules = query => async dispatch => {
+export const getSchedules = (query) => async (dispatch) => {
   try {
     setLoading()
-    const res = await axios.get(config.DATA_URL.concat(`schedules${query}`))
+    const res = await axios.get(
+      config.DATA_URL.concat(`schedules${query}&limit=3&sortBy=time&sort=1`)
+    )
     console.log(res)
     dispatch({
       type: GET_SCHEDULES,
-      payload: res.data.data
+      payload: {
+        data: res.data.data,
+        pageInfo: {
+          limit: res.data.limit,
+          totalData: res.data.totalData,
+          currentPage: res.data.page,
+          totalPage: res.data.totalPage
+        }
+      }
     })
   } catch (error) {
     dispatch({
@@ -31,7 +41,7 @@ export const getSchedules = query => async dispatch => {
     })
   }
 }
-export const addSchedule = data => async dispatch => {
+export const addSchedule = (data) => async (dispatch) => {
   try {
     const res = await axios.post(config.DATA_URL.concat(`schedules`), data)
     dispatch({
@@ -47,7 +57,7 @@ export const addSchedule = data => async dispatch => {
   }
 }
 
-export const getSchedulesForAgent = query => async dispatch => {
+export const getSchedulesForAgent = (query) => async (dispatch) => {
   try {
     const res = await axios.get(config.DATA_URL.concat(`schedules/my-schedules${query}`))
     dispatch({
@@ -62,7 +72,7 @@ export const getSchedulesForAgent = query => async dispatch => {
   }
 }
 
-export const updateSchedules = (id, data) => async dispatch => {
+export const updateSchedules = (id, data) => async (dispatch) => {
   try {
     setLoading()
     console.log('DATA HERE')
@@ -80,11 +90,11 @@ export const updateSchedules = (id, data) => async dispatch => {
   }
 }
 
-export const loadRoutes = () => async dispatch => {
+export const loadRoutes = () => async (dispatch) => {
   try {
     setLoading()
     const res = await axios.get(config.DATA_URL.concat('routes?show=all'))
-    let routes = res.data.data.map(dest => ({
+    let routes = res.data.data.map((dest) => ({
       value: `${dest.origin_code}-${dest.destination_code}`,
       label: `${dest.origin} (${dest.origin_code}) - ${dest.destination} (${dest.destination_code})`
     }))
@@ -100,11 +110,11 @@ export const loadRoutes = () => async dispatch => {
   }
 }
 
-export const loadRoutesWithID = () => async dispatch => {
+export const loadRoutesWithID = () => async (dispatch) => {
   try {
     setLoading()
     const res = await axios.get(config.DATA_URL.concat('routes?show=all'))
-    let routes = res.data.data.map(dest => ({
+    let routes = res.data.data.map((dest) => ({
       value: `${dest.id}`,
       label: `${dest.origin} (${dest.origin_code}) - ${dest.destination} (${dest.destination_code})`
     }))
@@ -120,7 +130,7 @@ export const loadRoutesWithID = () => async dispatch => {
   }
 }
 
-export const getSchedulesById = id => async dispatch => {
+export const getSchedulesById = (id) => async (dispatch) => {
   try {
     const res = await axios.get(config.DATA_URL.concat(`schedules/${id}`))
     dispatch({

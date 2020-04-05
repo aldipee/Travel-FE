@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Col,
   Row as Aw,
@@ -8,17 +8,20 @@ import {
 } from 'reactstrap'
 import { IoIosBus, IoMdSwap, IoMdContacts } from 'react-icons/io'
 import styled from 'styled-components'
+import { convertToRupiah, tConvert } from '../utils/conver'
 const ListGroupItem = styled(Item)`
-  margin: 10px 0px 8px 0px;
-  border: 1px solid #7f7f7f !important;
+  margin: 5px 0px 3px 0px;
+  border: 1px solid rgba(252, 237, 74, 0.73) !important;
   border-radius: 0 !important;
+  padding: 0.3rem;
 `
 const PriceTag = styled('div')`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: #fff;
   background: #007bff;
   margin-top: 40%;
+  margin-left: 10px;
 `
 const Line = styled('hr')`
   border-top: 2px dotted #007bff;
@@ -48,7 +51,7 @@ const WrapperLine = styled('div')`
   }
 `
 const WrapperTime = styled('div')`
-  margin-top: 20px !important;
+  margin-top: 8px !important;
 `
 const Icon = styled(IoMdSwap)`
   background: #007bff;
@@ -63,19 +66,32 @@ const Row = styled(Aw)`
   font-size: 1.1rem;
   font-family: 'Noto Sans KR', sans-serif;
 `
+const SubInfo = styled('span')`
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.3);
+`
+const Logo = styled('img')`
+  width: 85%;
+`
+const AgentName = styled('span')`
+  font-size: 15px;
+`
 
-function SchedulesItem({ name, totalSeats, price, time, date }) {
+function SchedulesItem({ name, totalSeats, price, time, date, agent }) {
+  const [logo, setLogo] = useState('')
   return (
     <>
       <ListGroupItem>
         <Row>
           <Col md={2}>
             <ListGroupItemHeading>
-              <img
+              <Logo
                 alt="logo"
                 className="img-fluid img-responsive"
                 src="https://cdn.freebiesupply.com/logos/large/2x/fly-emirates-logo-png-transparent.png"
               />
+              <AgentName>{agent}</AgentName>
             </ListGroupItemHeading>
           </Col>
           <Col md={8}>
@@ -84,19 +100,19 @@ function SchedulesItem({ name, totalSeats, price, time, date }) {
                 <Col sm={5}>
                   <div className="px-4">
                     <IoIosBus size={25} color={'rgba(0, 0, 0, 0.3)'} />
-                    {name}
+                    <SubInfo>{name}</SubInfo>
                   </div>
                 </Col>
                 <Col sm={6}>
                   <div className="px-4">
                     <IoMdContacts size={25} color={'rgba(0, 0, 0, 0.3)'} />
-                    {totalSeats} Seats Available
+                    <SubInfo> {totalSeats} Seats Available</SubInfo>
                   </div>
                 </Col>
               </Row>
               <WrapperTime className="d-flex">
                 <WrapperLine className="px-4">
-                  <span className="text">Departure</span> <div>08:00 AM</div>
+                  <span className="text">Departure</span> <div>{time && tConvert(time)}</div>
                 </WrapperLine>
                 <Line className="my-auto flex-grow-1" />
                 <Icon size={30} />
@@ -108,7 +124,7 @@ function SchedulesItem({ name, totalSeats, price, time, date }) {
             </ListGroupItemText>
           </Col>
           <WrapperPrice md={2}>
-            <PriceTag>{price}</PriceTag>
+            <PriceTag>{convertToRupiah(price)}</PriceTag>
           </WrapperPrice>
         </Row>
       </ListGroupItem>

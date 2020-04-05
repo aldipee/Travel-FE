@@ -18,9 +18,33 @@ import {
 } from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
+import { MdAirportShuttle } from "react-icons/md";
 
 import { BusContext } from '../../context/BusContext'
 import InsertModal from '../../components/ModalBuses'
+import styled from 'styled-components'
+
+const BusTitle = styled('h5')`
+  font-size : 15px;
+  font-weight : bold;
+  text-transform : uppercase;
+  color :  rgba(0,0,0,0.8)
+`
+const BusDesc = styled('h5')`
+  font-size : 13px;
+  color : rgba(0,0,0,0.4);
+  font-weight : bold;
+  text-transform : uppercase;
+  padding-top: 5px;
+  border-top : 1px solid rgba(0,0,0,0.1);
+`
+const LinkTo = styled(Link)`
+  &:hover : {
+    border : 1px solid red;
+    cursor : pointer;
+    text-decoration : none;
+  }
+`
 
 function Buses(props) {
   const busData = useContext(BusContext)
@@ -30,6 +54,33 @@ function Buses(props) {
     busData.actions.loadData()
   }, [])
   console.log(busData)
+
+  const newItem = (
+    <>
+      <Row className='my-2'>
+        {busData.data &&
+          busData.data.map((data, index) => (
+
+            <Col sm={4} className='my-2'>
+              <Card>
+                <LinkTo to={`${props.match.path}/edit/${data && data.id}`}>
+                  <Row className='px-3 my-2'>
+                    <Col sm={3}>
+                      <MdAirportShuttle color=' rgba(0,0,0,0.1)' size={50} />
+                    </Col>
+                    <Col sm={8} >
+                      <BusTitle>{data && data.name}</BusTitle>
+                      <BusDesc>{data && data.total_seat} seats</BusDesc>
+                    </Col>
+                  </Row>
+                </LinkTo>
+              </Card>
+            </Col>
+
+          ))}
+      </Row>
+    </>
+  )
 
   const item = (
     <>
@@ -174,7 +225,7 @@ function Buses(props) {
                   </Col>
                 </Row>
               </CardTitle>
-              <Table>{busData.isLoading ? placeholder : item}</Table>
+              <Table>{busData.isLoading ? placeholder : newItem}</Table>
               <Row>
                 <Col md={6} className="text-center"></Col>
                 <Col md={6} className="text-center"></Col>

@@ -37,7 +37,7 @@ function Routes(props) {
     const data = formSerizalize(e.target, { hash: true })
     const query = `?${data.searchValue ? `search[value]=${data.searchValue}&` : ''}limit=${
       data.limit
-    }`
+      }`
     props.history.push({ search: query })
     props.getAllRoutes(props.history.location.search)
   }
@@ -54,7 +54,7 @@ function Routes(props) {
       props.history.location.search
         ? `${props.history.location.search}&page=${page}`
         : `?page=${page}`
-    } `
+      } `
     console.log(query)
     props.getAllRoutes(query)
   }
@@ -129,8 +129,10 @@ function Routes(props) {
                     </Col>
                     <Col sm={2}>
                       <Button>
-                        <IoIosSearch size={30} />
-                        Go!
+                        <span><IoIosSearch size={30} /></span>
+
+
+
                       </Button>
                     </Col>
                   </Form>
