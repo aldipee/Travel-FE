@@ -18,7 +18,7 @@ import {
 } from 'reactstrap'
 
 import { RoutesContext } from '../../context/RouteContext'
-import InsertModal from '../../components/ModalRoutes'
+import InsertModal from '../../components/route/ModalRoutes'
 
 class BusEdit extends Component {
   static contextType = RoutesContext
@@ -31,11 +31,9 @@ class BusEdit extends Component {
     isLoading: true
   }
   componentDidMount() {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('token_user')}`
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     const { id } = this.props.match.params
-    axios.get(config.DATA_URL.concat(`bus/${id}`)).then(datas => {
+    axios.get(config.DATA_URL.concat(`bus/${id}`)).then((datas) => {
       const { data } = datas
       this.setState({
         data: {
@@ -50,7 +48,7 @@ class BusEdit extends Component {
     })
   }
 
-  editData = async e => {
+  editData = async (e) => {
     e.preventDefault()
     const { id } = this.props.match.params
     const data = formSerizalize(e.target, { hash: true })
@@ -58,15 +56,11 @@ class BusEdit extends Component {
     formData.append('busName', data.busName)
     formData.append('totalSeat', data.total_seat)
     formData.append('picture', this.state.file)
-    const res = await axios.patch(
-      config.DATA_URL.concat(`bus/${id}`),
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    const res = await axios.patch(config.DATA_URL.concat(`bus/${id}`), formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
     if (res.data.status) {
       alert('Data updated')
       this.props.history.push('/buses')
@@ -89,14 +83,14 @@ class BusEdit extends Component {
     //   })
   }
 
-  fileHandler = e => {
+  fileHandler = (e) => {
     this.setState({
       picViewer: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0]
     })
   }
 
-  inputHandler = e => {
+  inputHandler = (e) => {
     this.setState({
       [e.currentTarget.name]: e.currentTarget.value
     })
@@ -152,11 +146,7 @@ class BusEdit extends Component {
                         Select New Picture
                       </Label>
                       <Col sm={4}>
-                        <Input
-                          onChange={this.fileHandler}
-                          type="file"
-                          name="picture"
-                        />
+                        <Input onChange={this.fileHandler} type="file" name="picture" />
                       </Col>
                     </FormGroup>
                     <Button className="px-4" color="success">

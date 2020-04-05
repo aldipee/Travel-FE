@@ -4,7 +4,7 @@ import { convertToRupiah, converDate } from '../../utils/conver'
 
 import { Container, Col, Table } from 'reactstrap'
 import { getUserById } from '../../redux/actions/UsersActions'
-import UserProfile from '../../components/UserProfile'
+import UserProfile from '../../components/users/UserProfile'
 
 class UserDetails extends Component {
   componentDidMount() {

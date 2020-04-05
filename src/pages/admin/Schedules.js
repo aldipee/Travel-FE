@@ -7,7 +7,7 @@ import {
   Row,
   Card,
   CardTitle,
-  Table,
+  CardFooter,
   Input,
   Form,
   ListGroup
@@ -15,7 +15,7 @@ import {
 import { connect } from 'react-redux'
 import { getSchedules, loadRoutes } from '../../redux/actions/SchedulesActions'
 import Pagination from '../../components/Pagination'
-import ScheduleList from '../../components/SchedulesItem'
+import ScheduleList from '../../components/schedules/SchedulesItem'
 
 function Schedules(props) {
   const [date, setDate] = useState(new Date())
@@ -60,6 +60,7 @@ function Schedules(props) {
             price={data && data.price}
             time={data && data.time}
             agent={data && data.agent}
+            logo={data && data.logo}
           />
         ))}
     </ListGroup>
@@ -139,11 +140,12 @@ function Schedules(props) {
       </Row>
       <Row className="mx-2 my-2">
         <Col md={12}>
-          <CardTitle>
+          <CardTitle></CardTitle>
+          <Card body>{newTable}</Card>
+          <CardFooter>
             <Row>
               <Col sm={6}></Col>
               <Col sm={2}>
-                Paginatnion Here
                 {props.pageInfo && (
                   <Pagination
                     totalRecords={props.pageInfo && props.pageInfo.totalData}
@@ -154,8 +156,7 @@ function Schedules(props) {
                 )}
               </Col>
             </Row>
-          </CardTitle>
-          <Card body>{newTable}</Card>
+          </CardFooter>
         </Col>
       </Row>
     </Container>

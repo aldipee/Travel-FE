@@ -8,7 +8,8 @@ import {
 } from 'reactstrap'
 import { IoIosBus, IoMdSwap, IoMdContacts } from 'react-icons/io'
 import styled from 'styled-components'
-import { convertToRupiah, tConvert } from '../utils/conver'
+import { convertToRupiah, tConvert } from '../../utils/conver'
+import config from '../../utils/config'
 const ListGroupItem = styled(Item)`
   margin: 5px 0px 3px 0px;
   border: 1px solid rgba(252, 237, 74, 0.73) !important;
@@ -78,8 +79,7 @@ const AgentName = styled('span')`
   font-size: 15px;
 `
 
-function SchedulesItem({ name, totalSeats, price, time, date, agent }) {
-  const [logo, setLogo] = useState('')
+function SchedulesItem({ name, totalSeats, price, time, date, agent, logo }) {
   return (
     <>
       <ListGroupItem>
@@ -89,7 +89,7 @@ function SchedulesItem({ name, totalSeats, price, time, date, agent }) {
               <Logo
                 alt="logo"
                 className="img-fluid img-responsive"
-                src="https://cdn.freebiesupply.com/logos/large/2x/fly-emirates-logo-png-transparent.png"
+                src={config.DATA_FILE.concat(logo)}
               />
               <AgentName>{agent}</AgentName>
             </ListGroupItemHeading>

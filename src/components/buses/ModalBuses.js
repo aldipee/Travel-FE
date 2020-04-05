@@ -16,9 +16,9 @@ import {
 import styled from 'styled-components'
 import FormSerialize from 'form-serialize'
 import axios from 'axios'
-import config from '../utils/config'
+import config from '../../utils/config'
 
-import { RoutesContext } from '../context/RouteContext'
+import { RoutesContext } from '../../context/RouteContext'
 const Img = styled('img')`
   width: 70%;
   margin-left: 3rem;
@@ -36,13 +36,13 @@ export default class ModalRoutes extends Component {
       showModal: newProps.showModal
     })
   }
-  inputHandler = e => {
+  inputHandler = (e) => {
     this.setState({
       previewImage: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0]
     })
   }
-  addData = async e => {
+  addData = async (e) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token_user')}`
     e.preventDefault()
     const data = FormSerialize(e.target, { hash: true })

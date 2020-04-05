@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { converDate } from '../../utils/conver'
+import { converDate } from '../../../utils/conver'
 import {
   Container,
   Col,
@@ -13,12 +13,10 @@ import {
   Badge,
   Table,
   CardBody,
-  CardLink,
   CardSubtitle
 } from 'reactstrap'
 import { connect } from 'react-redux'
-import { getReservationById } from '../../redux/actions/ReservationsActions'
-import { IoIosBriefcase, IoMdPaper } from 'react-icons/io'
+import { getReservationById } from '../../../redux/actions/ReservationsActions'
 
 class ReservationsDetails extends Component {
   componentDidMount() {
@@ -31,37 +29,26 @@ class ReservationsDetails extends Component {
       <>
         <Container fluid={true}>
           <Row>
-            <Col sm="12" className="mb-2 mt-2">
+            <Col sm='12' className='mb-2 mt-2'></Col>
+            <Col sm='12'>
               <Card body>
-                <CardText>
-                  With supporting text below as a natural lead-in to additional content.
-                </CardText>
-              </Card>
-            </Col>
-            <Col sm="12">
-              <Card body>
-                <CardTitle></CardTitle>
                 <ListGroupItem>
-                  <ListGroupItemHeading>
-                    Reservations ID : #{data && data.id_reservation}
-                  </ListGroupItemHeading>
+                  <ListGroupItemHeading>Reservations ID : #{data && data.id_reservation}</ListGroupItemHeading>
                   <ListGroupItemText>
                     <Row>
-                      <Col md="12">
+                      <Col md='12'>
                         <CardBody>
-                          <CardTitle className="text-bold">Booking Code</CardTitle>
+                          <CardTitle className='text-bold'>Booking Code</CardTitle>
                           <CardSubtitle>
                             <Badge color={data && data.check_in ? 'success' : 'warning'}>
-                              <h5 style={{ color: '#fff', fontWeight: 'bold' }}>
-                                #{data && data.booking_code}
-                              </h5>
+                              <h5 style={{ color: '#fff', fontWeight: 'bold' }}>#{data && data.booking_code}</h5>
                             </Badge>
                           </CardSubtitle>
                         </CardBody>
                         <CardBody>
                           <CardText>
-                            <Col md="8">
-                              <Badge color="primary" style={{ padding: '3px' }}>
+                            <Col md='8'>
+                              <Badge color='primary' style={{ padding: '3px' }}>
                                 <h5>Routes Informations</h5>
                               </Badge>
 
@@ -88,8 +75,8 @@ class ReservationsDetails extends Component {
                                 </tbody>
                               </Table>
                             </Col>
-                            <Col md="10" className="mt-5">
-                              <Badge color="success" style={{ padding: '3px' }}>
+                            <Col md='10' className='mt-5'>
+                              <Badge color='success' style={{ padding: '3px' }}>
                                 <h5>Passenger Informations</h5>
                               </Badge>
 
@@ -111,9 +98,9 @@ class ReservationsDetails extends Component {
                                     <td>{data && data.gender}</td>
                                     <td>
                                       {data && data.check_in ? (
-                                        <Badge color="success">{'Completed'}</Badge>
+                                        <Badge color='success'>{'Completed'}</Badge>
                                       ) : (
-                                        <Badge color="warning">{'Wait for Check-In'}</Badge>
+                                        <Badge color='warning'>{'Wait for Check-In'}</Badge>
                                       )}
                                     </td>
                                   </tr>
@@ -121,8 +108,6 @@ class ReservationsDetails extends Component {
                               </Table>
                             </Col>
                           </CardText>
-                          <CardLink href="#">Card Link</CardLink>
-                          <CardLink href="#">Another Link</CardLink>
                         </CardBody>
                       </Col>
                     </Row>
@@ -137,7 +122,7 @@ class ReservationsDetails extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     data: state.dataReservations.singleData
   }

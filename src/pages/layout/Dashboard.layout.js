@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Style from 'styled-components'
 import { Container } from 'reactstrap'
 
 // Dashboard Components
-import SidebarMenu from '../../components/DashboardSidebar'
-import DashboardNavbar from '../../components/DashboardNavbar'
+import SidebarMenu from '../../components/dashboard/DashboardSidebar'
+import DashboardNavbar from '../../components/dashboard/DashboardNavbar'
 
 // Pages
 
@@ -26,7 +26,7 @@ const Content = Style(Container)`
 const Logo = Style('img')`
 
 `
-const DashboardLayout = props => {
+const DashboardLayout = (props) => {
   return (
     <div>
       <DashboardWrapper className="d-flex">

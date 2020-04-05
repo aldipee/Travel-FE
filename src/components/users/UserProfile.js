@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { convertToRupiah, converDate } from '../utils/conver'
+import { convertToRupiah, converDate } from '../../utils/conver'
 import { Container, Col, Row, Card, Label as Lbl, FormGroup, CustomInput } from 'reactstrap'
 const RowData = styled('div')`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);

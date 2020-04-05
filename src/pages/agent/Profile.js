@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getAgentProfile } from '../../redux/actions/AgentsActions'
 
-import AgentProfile from '../../components/AgentProfile'
+import AgentProfile from '../../components/agent/AgentProfile'
 
 function Profile(props) {
   useEffect(() => {
@@ -11,10 +10,7 @@ function Profile(props) {
   }, [])
   return (
     <div>
-      <AgentProfile
-        avatar={props.data && props.data.logo}
-        fullName={props.data && props.data.name}
-      />
+      <AgentProfile avatar={props.data && props.data.logo} fullName={props.data && props.data.name} />
     </div>
   )
 }

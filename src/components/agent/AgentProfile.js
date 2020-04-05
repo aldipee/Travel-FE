@@ -47,7 +47,7 @@ const AgentProfile = ({
                   <img
                     className="img-thumbnail rounded-circle mt-2"
                     width="70%"
-                    src={logo}
+                    src={avatar}
                     alt="pic"
                   />
                   <FormGroup>

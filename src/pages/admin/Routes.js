@@ -1,9 +1,8 @@
 /*eslint-disable*/
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import formSerizalize from 'form-serialize'
-
 import {
   Button,
   Container,
@@ -23,25 +22,22 @@ import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
 import { IoIosSearch } from 'react-icons/io'
 import { connect } from 'react-redux'
 import { getAllRoutes, addRoutes } from '../../redux/actions/RoutesActions'
-import { RoutesContext } from '../../context/RouteContext'
-import InsertModal from '../../components/ModalRoutes'
-
+import InsertModal from '../../components/route/ModalRoutes'
 import Pagination from '../../components/Pagination'
+import TableInfo from '../../components/TableInfo'
+import TableSearch from '../../components/TableSearch'
 
 function Routes(props) {
-  const routesData = useContext(RoutesContext)
   const [showModal, setShowModal] = useState(false)
   const openModal = () => setShowModal(!showModal)
-  const search = e => {
+  const search = (e) => {
     e.preventDefault()
     const data = formSerizalize(e.target, { hash: true })
-    const query = `?${data.searchValue ? `search[value]=${data.searchValue}&` : ''}limit=${
-      data.limit
-      }`
+    const query = `?${data.searchValue ? `search[value]=${data.searchValue}&` : ''}limit=${data.limit}`
     props.history.push({ search: query })
     props.getAllRoutes(props.history.location.search)
   }
-  const addNewData = e => {
+  const addNewData = (e) => {
     props.addRoutes(e)
     setShowModal(false)
   }
@@ -49,109 +45,72 @@ function Routes(props) {
     props.getAllRoutes()
   }, [])
 
-  const movePage = page => {
+  const movePage = (page) => {
     const query = `${
-      props.history.location.search
-        ? `${props.history.location.search}&page=${page}`
-        : `?page=${page}`
-      } `
-    console.log(query)
+      props.history.location.search ? `${props.history.location.search}&page=${page}` : `?page=${page}`
+    } `
     props.getAllRoutes(query)
   }
 
-  const onPageChanged = data => {
-    const { currentPage, totalPages, pageLimit } = data
+  const onPageChanged = (data) => {
+    const { currentPage } = data
     movePage(currentPage)
   }
   const { data, pageInfo } = props
-  console.log(pageInfo)
   return (
     <>
       <InsertModal showModal={showModal} openModal={openModal} addNewData={addNewData} />
       <Container fluid={true}>
         <Row>
-          <Col sm="6" className="my-3">
-            <Card body>
-              <CardTitle>Special Title Treatment</CardTitle>
-              <CardText>
-                With supporting text below as a natural lead-in to additional content.
-              </CardText>
-            </Card>
-          </Col>
-          <Col sm="12">
+          <Col sm='12' className='mt-4'>
             <Card body>
               <CardTitle>
                 <Row>
-                  <Col sm={2}>
-                    <h4 className="border-gray border-right" style={{ fontSize: '20px' }}>
-                      <strong className="text-secondary" style={{ fontSize: '19px' }}>
-                        {props.pageInfo && props.pageInfo.totalData}
-                      </strong>{' '}
-                      Routes
-                    </h4>
-                  </Col>
-                  <Col sm={2}>
-                    {props.pageInfo && props.pageInfo.page && (
-                      <span
-                        className="current-page d-inline-block h-100 pl-4 text-secondary"
-                        style={{ fontSize: '16px' }}>
-                        Page{' '}
-                        <span style={{ fontSize: '16px' }} className="font-weight-bold">
-                          {props.pageInfo.page}
-                        </span>{' '}
-                        /{' '}
-                        <span style={{ fontSize: '17px' }} className="font-weight-bold">
-                          {props.pageInfo.totalPage}
-                        </span>
-                      </span>
-                    )}
-                  </Col>
-
-                  <Col sm="6" className="text-right">
+                  {props.pageInfo && (
+                    <TableInfo
+                      totalData={props.pageInfo.totalData}
+                      page={props.pageInfo.page}
+                      totalPage={props.pageInfo.totalPage}
+                      title='Routes'
+                    />
+                  )}
+                  <Col sm='6' className='text-right'>
                     <Button onClick={openModal}>Add Routes</Button>
                   </Col>
                 </Row>
-                <Row className="mt-3 mb-1">
+                <TableSearch onSubmit={search} />
+                {/* <Row className='mt-3 mb-1'>
                   <Form inline onSubmit={search}>
                     <Col sm={4}>
-                      <FormGroup className="mr-4">
-                        <Input type="text" name="searchValue" placeholder="Search by name.." />
+                      <FormGroup className='mr-4'>
+                        <Input type='text' name='searchValue' placeholder='Search by name..' />
                       </FormGroup>
                     </Col>
-                    <Col sm={4} className="ml-4">
-                      <FormGroup className="mr-4">
-                        <Input type="select" name="limit">
-                          <option value="5">Show 5 data</option>
-                          <option value="10">Show 10 data</option>
-                          <option value="20">Show 20 data</option>
+                    <Col sm={4} className='ml-4'>
+                      <FormGroup className='mr-4'>
+                        <Input type='select' name='limit'>
+                          <option value='5'>Show 5 data</option>
+                          <option value='10'>Show 10 data</option>
+                          <option value='20'>Show 20 data</option>
                         </Input>
                       </FormGroup>
                     </Col>
                     <Col sm={2}>
                       <Button>
-                        <span><IoIosSearch size={30} /></span>
-
-
-
+                        <span>
+                          <IoIosSearch size={30} />
+                        </span>
                       </Button>
                     </Col>
                   </Form>
-
-                  <Col>
-                    {/* <Paginations
-                      currentPage={pageInfo && pageInfo.page}
-                      totalPages={pageInfo && pageInfo.totalPage}
-                      movePage={movePage}
-                    /> */}
-                  </Col>
-                </Row>
+                </Row> */}
               </CardTitle>
 
               <Table>
                 <thead>
                   <tr>
-                    <th name="no">
-                      # <Icon path={mdiSort} size={1} color="#8d9498" />
+                    <th name='no'>
+                      # <Icon path={mdiSort} size={1} color='#8d9498' />
                     </th>
                     <th>Depature</th>
                     <th>Destionation</th>
@@ -163,7 +122,7 @@ function Routes(props) {
                   {data &&
                     data.map((data, index) => (
                       <tr>
-                        <th scope="row">{routesData.startPageFrom + index}</th>
+                        <th scope='row'>{index}</th>
                         <td>
                           {data && data.origin} ({data && data.origin_code})
                         </td>
@@ -174,24 +133,14 @@ function Routes(props) {
 
                         <td>
                           <Link to={`${props.match.path}/edit/${data && data.id}`}>
-                            <Icon
-                              id="EditData"
-                              path={mdiFileEditOutline}
-                              size={1}
-                              color="#8d9498"
-                            />
-                            <UncontrolledTooltip placement="right" target="EditData">
+                            <Icon id='EditData' path={mdiFileEditOutline} size={1} color='#8d9498' />
+                            <UncontrolledTooltip placement='right' target='EditData'>
                               Edit Data
                             </UncontrolledTooltip>
                           </Link>
                           <Button close>
-                            <Icon
-                              id="DeleteData"
-                              path={mdiDeleteOutline}
-                              size={1}
-                              color="#8d9498"
-                            />
-                            <UncontrolledTooltip placement="right" target="DeleteData">
+                            <Icon id='DeleteData' path={mdiDeleteOutline} size={1} color='#8d9498' />
+                            <UncontrolledTooltip placement='right' target='DeleteData'>
                               Delete Data
                             </UncontrolledTooltip>
                           </Button>
@@ -201,9 +150,9 @@ function Routes(props) {
                 </tbody>
               </Table>
               <Row>
-                <Col md={6} className="text-center">
+                <Col md={6} className='text-center'>
                   {pageInfo && pageInfo.totalPage && (
-                    <div className="d-flex flex-row py-4 align-items-center">
+                    <div className='d-flex flex-row py-4 align-items-center'>
                       <Pagination
                         totalRecords={pageInfo && pageInfo.totalData}
                         pageLimit={pageInfo && pageInfo.limit}
@@ -222,7 +171,7 @@ function Routes(props) {
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.routesData.data,
   pageInfo: state.routesData.pageInfo,
   isLoading: state.routesData.isLoading,

@@ -6,6 +6,7 @@ import usersReducers from './UsersReducers'
 import agentReducers from './AgentsReducer'
 import routesReducers from './RoutesReducers'
 import busReducers from './BusReducer'
+import AuthReducer from './AuthReducer'
 
 export default combineReducers({
   dataReservations: reservationsReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
   usersData: usersReducers,
   agentsData: agentReducers,
   routesData: routesReducers,
-  busData: busReducers
+  busData: busReducers,
+  AuthData: AuthReducer
 })

@@ -12,7 +12,7 @@ function Reservations(props) {
     props.getReservations()
   }, [])
 
-  const searchData = e => {
+  const searchData = (e) => {
     setSearch(e.currentTarget.value)
     props.history.push({
       search: `?search[key]=fullName&search[value]=${e.currentTarget.value}`
@@ -20,16 +20,7 @@ function Reservations(props) {
     props.getReservations(props.history.location.search)
   }
 
-  const headerTable = [
-    '#',
-    'ID Res',
-    'Status',
-    'Passenger Name',
-    'Boarding Time',
-    'Data',
-    'Gender',
-    'Routes'
-  ]
+  const headerTable = ['#', 'ID Res', 'Status', 'Passenger Name', 'Boarding Time', 'Data', 'Gender', 'Routes']
   const item = (
     <>
       <thead>
@@ -43,7 +34,7 @@ function Reservations(props) {
         {props.reservations.data &&
           props.reservations.data.map((data, index) => (
             <tr>
-              <th scope="row">{index + 1}</th>
+              <th scope='row'>{index + 1}</th>
               <td>
                 <Link to={`${props.match.path}/details/${data && data.id_reservation}`}>
                   {data && `#${data.id_reservation}`}{' '}
@@ -66,29 +57,29 @@ function Reservations(props) {
     <>
       <thead>
         <tr>
-          <th width="7%">
-            <div className="placeholder"></div>
+          <th width='7%'>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
           <th>
-            <div className="placeholder"></div>
+            <div className='placeholder'></div>
           </th>
         </tr>
       </thead>
@@ -97,28 +88,28 @@ function Reservations(props) {
           placeholderItems.map((data, index) => (
             <tr>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
-              <td width="10%">
-                <div className="placeholder"></div>
+              <td width='10%'>
+                <div className='placeholder'></div>
               </td>
               <td>
-                <div className="placeholder"></div>
+                <div className='placeholder'></div>
               </td>
             </tr>
           ))}
@@ -129,26 +120,26 @@ function Reservations(props) {
   return (
     <Container fluid={true}>
       <Row>
-        <Col sm="12" className="mt-3">
+        <Col sm='12' className='mt-3'>
           <Card body>
             <CardTitle>
               <Row>
-                <Col sm="6">All Routes</Col>
-                <Col sm="6" className="text-right"></Col>
+                <Col sm='6'></Col>
+                <Col sm='6' className='text-right'></Col>
               </Row>
               <Row>
-                <Col sm="3">
+                <Col sm='3'>
                   <FormGroup>
                     <Input
-                      type="text"
-                      name="name"
+                      type='text'
+                      name='name'
                       value={search}
                       onChange={searchData}
-                      placeholder="Search by name.."
+                      placeholder='Search by name..'
                     />
                   </FormGroup>
                 </Col>
-                <Col sm="6"></Col>
+                <Col sm='6'></Col>
               </Row>
             </CardTitle>
             <Table>{props.reservations.isLoading ? placeholder : item}</Table>
@@ -158,7 +149,8 @@ function Reservations(props) {
     </Container>
   )
 }
-const mapStateToProps = state => {
+
+const mapStateToProps = (state) => {
   return {
     reservations: state.dataReservations
   }

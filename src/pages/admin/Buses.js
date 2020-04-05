@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import Select from 'react-select'
-import { Button, Container, Col, Row, Card, CardTitle, CardText, Table } from 'reactstrap'
+import { Button, Container, Col, Row, Card, CardTitle, Table } from 'reactstrap'
 
-// Local NModules
+// Local Module
 import { BusContext } from '../../context/BusContext'
 
 function Buses() {
@@ -10,7 +10,6 @@ function Buses() {
   useEffect(() => {
     Bus.actions.loadAgents()
   }, [])
-  console.log(Bus)
   return (
     <>
       <Container fluid={true}>
@@ -19,7 +18,7 @@ function Buses() {
             <Card body>
               <CardTitle>
                 <Row>
-                  <Col sm="6">All Routes</Col>
+                  <Col sm="6"></Col>
                   <Col sm="6" className="text-right"></Col>
                 </Row>
                 <Row>
@@ -54,7 +53,6 @@ function Buses() {
                     ))}
                 </tbody>
               </Table>
-              <Button>Go somewhere</Button>
             </Card>
           </Col>
         </Row>

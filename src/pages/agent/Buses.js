@@ -18,31 +18,31 @@ import {
 } from 'reactstrap'
 import Icon from '@mdi/react'
 import { mdiFileEditOutline, mdiDeleteOutline, mdiSort } from '@mdi/js'
-import { MdAirportShuttle } from "react-icons/md";
+import { MdAirportShuttle } from 'react-icons/md'
 
 import { BusContext } from '../../context/BusContext'
-import InsertModal from '../../components/ModalBuses'
+import InsertModal from '../../components/buses/ModalBuses'
 import styled from 'styled-components'
 
 const BusTitle = styled('h5')`
-  font-size : 15px;
-  font-weight : bold;
-  text-transform : uppercase;
-  color :  rgba(0,0,0,0.8)
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.8);
 `
 const BusDesc = styled('h5')`
-  font-size : 13px;
-  color : rgba(0,0,0,0.4);
-  font-weight : bold;
-  text-transform : uppercase;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+  text-transform: uppercase;
   padding-top: 5px;
-  border-top : 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 `
 const LinkTo = styled(Link)`
   &:hover : {
-    border : 1px solid red;
-    cursor : pointer;
-    text-decoration : none;
+    border: 1px solid red;
+    cursor: pointer;
+    text-decoration: none;
   }
 `
 
@@ -57,18 +57,17 @@ function Buses(props) {
 
   const newItem = (
     <>
-      <Row className='my-2'>
+      <Row className="my-2">
         {busData.data &&
           busData.data.map((data, index) => (
-
-            <Col sm={4} className='my-2'>
+            <Col sm={4} className="my-2">
               <Card>
                 <LinkTo to={`${props.match.path}/edit/${data && data.id}`}>
-                  <Row className='px-3 my-2'>
+                  <Row className="px-3 my-2">
                     <Col sm={3}>
-                      <MdAirportShuttle color=' rgba(0,0,0,0.1)' size={50} />
+                      <MdAirportShuttle color=" rgba(0,0,0,0.1)" size={50} />
                     </Col>
-                    <Col sm={8} >
+                    <Col sm={8}>
                       <BusTitle>{data && data.name}</BusTitle>
                       <BusDesc>{data && data.total_seat} seats</BusDesc>
                     </Col>
@@ -76,7 +75,6 @@ function Buses(props) {
                 </LinkTo>
               </Card>
             </Col>
-
           ))}
       </Row>
     </>
@@ -100,31 +98,19 @@ function Buses(props) {
             <tr>
               <th scope="row">{index + 1}</th>
               <td width="25%">
-                <Link to={`${props.match.path}/details/${data.id}`}>
-                  {data && data.name}
-                </Link>
+                <Link to={`${props.match.path}/details/${data.id}`}>{data && data.name}</Link>
               </td>
               <td width="15%">{data && data.total_seat}</td>
 
               <td width="10%">
                 <Link to={`${props.match.path}/edit/${data && data.id}`}>
-                  <Icon
-                    id="EditData"
-                    path={mdiFileEditOutline}
-                    size={1}
-                    color="#8d9498"
-                  />
+                  <Icon id="EditData" path={mdiFileEditOutline} size={1} color="#8d9498" />
                   <UncontrolledTooltip placement="right" target="EditData">
                     Edit Data
                   </UncontrolledTooltip>
                 </Link>
                 <Button close>
-                  <Icon
-                    id="DeleteData"
-                    path={mdiDeleteOutline}
-                    size={1}
-                    color="#8d9498"
-                  />
+                  <Icon id="DeleteData" path={mdiDeleteOutline} size={1} color="#8d9498" />
                   <UncontrolledTooltip placement="right" target="DeleteData">
                     Delete Data
                   </UncontrolledTooltip>
@@ -156,7 +142,7 @@ function Buses(props) {
         </tr>
       </thead>
       <tbody>
-        {placeholderItems.map(data => (
+        {placeholderItems.map((data) => (
           <tr>
             <td width="8%">
               <div className="placeholder"></div>
@@ -187,8 +173,7 @@ function Buses(props) {
             <Card body>
               <CardTitle>Special Title Treatment</CardTitle>
               <CardText>
-                With supporting text below as a natural lead-in to additional
-                content.
+                With supporting text below as a natural lead-in to additional content.
               </CardText>
             </Card>
           </Col>
@@ -205,11 +190,7 @@ function Buses(props) {
                   <Col sm="12">
                     <Form inline>
                       <FormGroup className="mr-4">
-                        <Input
-                          type="text"
-                          name="searchValue"
-                          placeholder="Search by name.."
-                        />
+                        <Input type="text" name="searchValue" placeholder="Search by name.." />
                       </FormGroup>
                       <Col>
                         <FormGroup className="mr-4">

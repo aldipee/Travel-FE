@@ -14,6 +14,8 @@ import {
   Spinner
 } from 'reactstrap'
 import { AuthContext } from '../context/Auth'
+import { userLogin, isTokenAvaiable } from '../redux/actions/AuthActions'
+import { connect } from 'react-redux'
 
 const LoginPage = Style('body')`
 background-color : #efefee;
@@ -42,7 +44,7 @@ justify-content: center;
 align-items: center;
 `
 
-export default class Login extends Component {
+class Login extends Component {
   static contextType = AuthContext
   state = {
     username: '',
@@ -56,19 +58,20 @@ export default class Login extends Component {
     }
   }
 
-  formSubmit = async e => {
+  formSubmit = async (e) => {
     e.preventDefault()
     this.setState({ isLoading: true })
+    // this.props.userLogin(this.state.username, this.state.password)
     const { AuthLogin } = this.context
     const res = await AuthLogin(this.state.username, this.state.password)
     res ? this.props.history.push('/') : this.setState({ isWrong: true, isLoading: false })
   }
-  inputHandler = e => {
+  inputHandler = (e) => {
     this.setState({
       username: e.currentTarget.value
     })
   }
-  passwordHandler = e => {
+  passwordHandler = (e) => {
     this.setState({
       password: e.currentTarget.value
     })
@@ -92,7 +95,7 @@ export default class Login extends Component {
                       invalid={this.state.isWrong ? true : false}
                       required
                       value={this.state.username}
-                      onChange={e => this.inputHandler(e)}
+                      onChange={(e) => this.inputHandler(e)}
                     />
                     {/* <FormFeedback valid>Sweet! that name is available</FormFeedback> */}
                   </FormGroup>
@@ -106,7 +109,7 @@ export default class Login extends Component {
                       required
                       type="password"
                       value={this.state.password}
-                      onChange={e => this.passwordHandler(e)}
+                      onChange={(e) => this.passwordHandler(e)}
                     />
                     {/* <FormFeedback>Oh noes! that name is already taken</FormFeedback> */}
                     <FormFeedback>Oh noes! Invalid username or password</FormFeedback>
@@ -114,7 +117,7 @@ export default class Login extends Component {
                   <FormGroup className="px-3 mt-4 mb-5">
                     <Button
                       disabled={this.state.isLoading ? true : false}
-                      onClick={e => this.formSubmit(e)}
+                      onClick={(e) => this.formSubmit(e)}
                       className="px-4 py-2"
                       color="primary">
                       {this.state.isLoading ? <Spinner size="sm" color="white" /> : 'Sign In'}
@@ -132,3 +135,7 @@ export default class Login extends Component {
     )
   }
 }
+
+const mapStateToProps = ({ AuthData }) => ({ ...AuthData })
+const mapDispatchToProps = { userLogin, isTokenAvaiable }
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
